@@ -1,0 +1,1134 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="영어 슬랭 74개를 단톡방 대화로 배우는 한국어 슬랭 사전">
+<style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}img{max-width:100%}</style>
+<title>No Cap 슬랭 사전</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Jua&family=Gothic+A1:wght@400;600&family=Gaegu:wght@700&display=swap">
+<style>
+/* 컨셉: 사전이 아니라 밤에 밀린 톡을 따라잡는 단톡방. 채팅 셸(헤더/레일/피드/컴포저) + 듀오링고식 3D 버튼·퀵리플라이 퀴즈·읽기 진행 바 */
+:root {
+  --bg: #CBE2D6; --dot: #B3CFC2; --surface: #FFFFFF; --fg: #141A24; --muted: #4A596B; --line: #B4CBC0; --input: #EEF3F2;
+  --sent: #FFE066; --sent-fg: #141A24; --accent: #FF6B3D; --accent-edge: #C6451A; --accent-fg: #1A0E08;
+  --badge: #DF2A20; --badge-fg: #FFFFFF; --good: #3DD37C; --bad: #FF5C5C; --ink: #141A24; --cut: #FFFFFF;
+  --row-active: #FFF3BF; --chip-on: #141A24; --chip-on-fg: #FFE066; --av-fg: #FFFFFF;
+  --gl: max(16px, env(safe-area-inset-left, 0px)); --gr: max(16px, env(safe-area-inset-right, 0px)); --sat: env(safe-area-inset-top, 0px);
+  --bar: calc(56px + var(--sat)); --stuck: calc(64px + var(--sat));
+  --fd: "Fredoka", "Jua", sans-serif; --fb: "Gothic A1", sans-serif; --fj: "Jua", sans-serif; --fs: "Gaegu", sans-serif;
+}
+@media (max-width: 959px) { :root { --stuck: calc(116px + var(--sat)); } }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1B1D; --dot: #1B2C2F; --surface: #1C2B2E; --fg: #EEF3F2; --muted: #9FB3B4; --line: #2F4447; --input: #0F1B1D;
+    --sent: #E8CC45; --sent-fg: #141A24; --accent: #FF7A4D; --accent-edge: #B23A14; --accent-fg: #1A0E08;
+    --badge: #DF2A20; --badge-fg: #FFFFFF; --good: #3BD16A; --bad: #FF6B6B; --ink: #0A0F10; --cut: #EEF3F2;
+    --row-active: #2A3D40; --chip-on: #E8CC45; --chip-on-fg: #141A24; --av-fg: #FFFFFF; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1B1D; --dot: #1B2C2F; --surface: #1C2B2E; --fg: #EEF3F2; --muted: #9FB3B4; --line: #2F4447; --input: #0F1B1D;
+  --sent: #E8CC45; --sent-fg: #141A24; --accent: #FF7A4D; --accent-edge: #B23A14; --accent-fg: #1A0E08;
+  --badge: #DF2A20; --badge-fg: #FFFFFF; --good: #3BD16A; --bad: #FF6B6B; --ink: #0A0F10; --cut: #EEF3F2;
+  --row-active: #2A3D40; --chip-on: #E8CC45; --chip-on-fg: #141A24; --av-fg: #FFFFFF; color-scheme: dark;
+}
+
+[hidden] { display: none !important; }
+* { box-sizing: border-box; }
+html { font-synthesis: none; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg); font: 400 15px/1.55 var(--fb);
+  background-image: radial-gradient(var(--dot) 1.2px, transparent 1.3px); background-size: 22px 22px;
+  overflow-x: clip;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+mark { background: var(--sent); color: var(--sent-fg); padding: 0 2px; border-radius: 3px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+
+/* 헤더 */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); margin: 0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl)); padding: 0 var(--gr) 0 var(--gl); }
+.bar-in { display: flex; align-items: center; gap: 12px; height: 56px; max-width: 1080px; margin: 0 auto; }
+.title { font: 700 20px/1 var(--fd); margin: 0; white-space: nowrap; }
+.icon { margin-left: auto; width: 40px; height: 40px; border-radius: 12px; border: 0; background: none; color: var(--fg); display: grid; place-items: center; }
+.prog { position: absolute; left: 0; bottom: -1px; width: 100%; height: 3px; background: var(--sent); transform: scaleX(var(--read, 0)); transform-origin: left; transition: transform 400ms ease-out; }
+
+/* 다이컷 스티커 — 실제 이벤트/값 5곳에만 */
+.stk { display: inline-block; padding: 2px 10px; border-radius: 10px; font: 700 14px/1.3 var(--fs); color: var(--ink); background: var(--fill, var(--sent)); box-shadow: 0 0 0 3px var(--cut), 0 0 0 5px var(--ink); transform: rotate(var(--r, 0deg)); white-space: nowrap; }
+
+/* 채팅방 목록: DOM 하나, 모바일=탭 스트립(기본) / 데스크톱=레일 */
+.wrap { max-width: 1080px; margin: 0 auto; }
+.rooms { position: sticky; top: var(--bar); z-index: 15; display: flex; gap: 8px; height: 52px; margin: 0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl)); padding: 6px var(--gr) 6px var(--gl); background: var(--bg); overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; scrollbar-width: none; }
+.rooms::-webkit-scrollbar { display: none; }
+.room { flex: none; display: flex; align-items: center; gap: 6px; height: 40px; padding: 0 12px; border-radius: 999px; background: var(--surface); border: 2px solid var(--line); box-shadow: 0 2px 0 var(--line); color: var(--fg); font: 600 14px/1 var(--fb); scroll-snap-align: start; transition: transform 120ms, box-shadow 120ms, background-color 160ms; }
+.room:active { transform: translateY(2px); box-shadow: none; transition-duration: 80ms; }
+.room[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-fg); border-color: var(--chip-on); }
+.rav, .rprev { display: none; }
+.rtext { min-width: 0; }
+.rname { font: inherit; }
+.rprev { font: 400 13px/1.3 var(--fb); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.badge { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 5px; border-radius: 999px; background: var(--badge); color: var(--badge-fg); font: 700 10px/1 var(--fd); font-variant-numeric: tabular-nums; }
+
+/* 피드 */
+.feed { min-width: 0; padding-top: 12px; display: flex; flex-direction: column; min-height: calc(100dvh - var(--bar)); }
+.pill { display: flex; width: fit-content; max-width: 100%; margin: 0 auto; align-items: center; gap: 6px; background: var(--surface); border-radius: 999px; padding: 5px 12px; font: 600 12px/1.4 var(--fb); color: var(--muted); white-space: nowrap; }
+.n { font-variant-numeric: tabular-nums; }
+.date { margin-bottom: 12px; }
+.count { display: block; color: var(--fg); margin: 16px auto; scroll-margin-top: calc(var(--stuck) + 8px); white-space: normal; text-align: center; }
+.spill { position: sticky; top: var(--stuck); z-index: 5; margin-bottom: 16px; transition: transform 150ms, box-shadow 150ms; }
+.stuck { transform: scale(1.04); box-shadow: 0 1px 0 var(--line); }
+.warn { border-radius: 16px; max-width: 92%; line-height: 1.5; white-space: normal; text-align: center; }
+
+/* 공지 바(오늘의 슬랭) */
+.notice { display: grid; grid-template-columns: 20px 1fr 20px; gap: 10px; align-items: center; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; color: var(--fg); font: inherit; }
+.ntext { min-width: 0; display: grid; gap: 2px; }
+.nlabel { font: 600 12px/1.3 var(--fb); color: var(--muted); }
+.nword { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.nword b { font: 700 20px/1.1 var(--fd); flex: none; }
+.nmean { font: 600 14px/1.3 var(--fb); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.chev { transition: transform 250ms; }
+.notice[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.npanel { padding: 16px 0 4px; }
+
+/* 스레드 = 항목 1개 (예문 → 내 질문 → 뜻) */
+.sec { position: relative; }
+.sentinel { position: absolute; top: calc(-1 * var(--stuck)); left: 0; width: 1px; height: 1px; }
+.thread { position: relative; z-index: 1; display: grid; grid-template-columns: 36px 1fr; column-gap: 8px; row-gap: 6px; margin-bottom: 20px; scroll-margin-top: calc(var(--stuck) + 8px); --d: calc(var(--i, 0) * 90ms); }
+.av { grid-row: 1; width: 36px; height: 36px; border-radius: 50%; background: hsl(calc(var(--h) * 36) 50% 38%); color: var(--av-fg); font: 400 16px/36px var(--fj); text-align: center; }
+.bot { background: var(--chip-on); color: var(--chip-on-fg); font: 700 16px/36px var(--fd); }
+.who { grid-column: 2; grid-row: 1; display: flex; align-items: baseline; gap: 8px; min-width: 0; align-self: center; }
+.name { font: 700 20px/1.1 var(--fd); color: var(--fg); background: none; border: 0; padding: 9px 6px; margin: -9px -6px; text-align: left; min-width: 0; overflow-wrap: anywhere; }
+.name:hover { text-decoration: underline 3px var(--sent); text-underline-offset: 3px; }
+.cat { font: 400 12px/1.3 var(--fb); color: var(--muted); white-space: nowrap; }
+.bubble { grid-column: 2; position: relative; margin: 0; min-width: 0; overflow-wrap: anywhere; border-radius: 18px; }
+.rcv { justify-self: start; max-width: 82%; background: var(--surface); color: var(--fg); padding: 10px 14px; border-top-left-radius: 4px; box-shadow: 0 1px 0 var(--line); transform-origin: bottom left; }
+.snt { justify-self: end; max-width: 78%; background: var(--sent); color: var(--sent-fg); padding: 8px 12px; border-top-right-radius: 4px; font: 400 14px/1.5 var(--fb); transform-origin: bottom right; }
+.ex { font: 500 16px/1.45 var(--fd); }
+.ex b { font-weight: 700; text-decoration: underline 3px var(--sent); text-underline-offset: 2px; }
+.txt { display: block; }
+.m { font: 600 15px/1.55 var(--fb); }
+.t { font: 400 14px/1.55 var(--fb); color: var(--muted); }
+.one { position: absolute; left: -14px; bottom: 2px; font: 700 11px/1 var(--fd); color: var(--fg); opacity: .7; }
+.in .one { opacity: 0; transform: translateX(4px); }
+.dots { position: absolute; top: 15px; left: 14px; display: flex; gap: 4px; }
+.dots i { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+.typing { min-height: 40px; min-width: 64px; }
+.here { position: absolute; top: -10px; right: 8px; }
+.flash::after { content: ""; position: absolute; inset: -6px; border-radius: 24px; border: 3px solid var(--sent); opacity: 0; pointer-events: none; animation: ring 900ms; }
+
+/* 퀴즈(공지 패널) */
+.quiz { display: grid; grid-template-columns: 36px 1fr; column-gap: 8px; row-gap: 8px; margin-bottom: 8px; }
+.opts { grid-column: 2; justify-self: end; width: 88%; display: grid; gap: 8px; }
+.qstk { position: absolute; top: -12px; right: -8px; }
+
+/* 청키 버튼 — 듀오링고 문법 */
+.btn, .btn2 { height: 44px; padding: 0 18px; border-radius: 16px; border: 0; font: 400 16px/1 var(--fj); transition: transform 120ms, box-shadow 120ms; }
+.btn { background: var(--accent); color: var(--accent-fg); box-shadow: 0 4px 0 var(--accent-edge); }
+.btn2 { background: var(--surface); color: var(--fg); border: 2px solid var(--line); box-shadow: 0 4px 0 var(--line); }
+.btn:active, .btn2:active { transform: translateY(4px); box-shadow: none; transition-duration: 80ms; }
+.opt { height: auto; min-height: 44px; padding: 10px 14px; font: 600 15px/1.4 var(--fb); text-align: left; white-space: normal; }
+.reset { grid-column: 2; justify-self: start; }
+
+/* 푸터 + 컴포저 */
+.foot { display: grid; gap: 16px; justify-items: center; margin: 8px 0 24px; }
+.divider { display: flex; align-items: center; gap: 12px; width: 100%; margin: 0; font: 400 12px/1 var(--fb); color: var(--muted); }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.composer { position: sticky; bottom: 0; z-index: 15; display: grid; grid-template-columns: 1fr auto; gap: 8px; background: var(--surface); border-top: 1px solid var(--line); margin: auto calc(-1 * var(--gr)) 0 calc(-1 * var(--gl)); padding: 10px var(--gr) calc(10px + env(safe-area-inset-bottom, 0px)) var(--gl); }
+.q { width: 100%; min-width: 0; height: 44px; border-radius: 22px; background: var(--input); border: 0; color: var(--fg); font: 400 16px/1 var(--fb); padding: 0 16px; -webkit-appearance: none; appearance: none; }
+.q::placeholder { color: var(--muted); }
+.q:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--fg); }
+
+/* 토스트 */
+.toast { position: fixed; left: 50%; bottom: calc(72px + env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; align-items: center; gap: 8px; background: var(--sent); color: var(--sent-fg); border-radius: 999px; padding: 8px 14px; font: 600 14px/1.3 var(--fb); white-space: nowrap; opacity: 0; transform: translate(-50%, 8px); transition: opacity 150ms, transform 150ms; pointer-events: none; }
+.show { opacity: 1; transform: translate(-50%, 0); transition-duration: 200ms; }
+.tcheck, .tstk { display: none; }
+.kcheck .tcheck { display: block; }
+.kstk .tstk { display: inline-block; margin: 0 8px 0 4px; }
+
+@media (max-width: 479px) { .title { font-size: 18px; } }
+@media (max-width: 400px) {
+  .thread, .quiz { grid-template-columns: 32px 1fr; }
+  .av { width: 32px; height: 32px; line-height: 32px; font-size: 14px; }
+  .name { font-size: 18px; padding-block: 11px; margin-block: -11px; }
+}
+@media (min-width: 960px) {
+  .wrap { display: grid; grid-template-columns: 272px minmax(0, 1fr); column-gap: 24px; align-items: start; }
+  .rooms { top: calc(var(--bar) + 16px); display: grid; align-content: start; gap: 4px; height: auto; max-height: calc(100dvh - var(--bar) - 32px); margin: 0 -6px; padding: 16px 6px; background: none; overflow: auto; scroll-snap-type: none; }
+  .room { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; height: 60px; padding: 8px 10px; border-radius: 14px; background: none; border: 0; box-shadow: none; font-size: 15px; text-align: left; width: 100%; }
+  .room:active { transform: none; }
+  .room[aria-pressed="true"] { background: var(--row-active); color: var(--fg); }
+  .rav { display: block; width: 44px; height: 44px; border-radius: 50%; background: hsl(calc(var(--h) * 36) 50% 38%); color: var(--av-fg); font: 400 18px/44px var(--fj); text-align: center; }
+  .all { background: var(--chip-on); color: var(--chip-on-fg); font: 700 11px/44px var(--fd); }
+  .rprev { display: block; }
+  .rtext { display: grid; gap: 2px; }
+  .badge { min-width: 18px; height: 18px; padding: 0 6px; font-size: 11px; }
+  .feed { max-width: 680px; }
+  .composer { margin: auto 0 0; padding-left: 16px; padding-right: 16px; }
+}
+
+/* 모션: 도착 시퀀스(CSS delay만) + 스크롤 팝인(IO) + 타이핑 리빌(첫 3개 + 오늘) */
+@media (prefers-reduced-motion: no-preference) {
+  .date { animation: fade 200ms both; }
+  .notice { animation: drop 500ms cubic-bezier(.34, 1.56, .64, 1) both; }
+  .arrive { animation: fade 200ms both; }
+  .js .reveal:not(.in) .bubble { opacity: 0; transform: translateY(10px) scale(.96); }
+  .js [data-typing]:not(.in) .txt { opacity: 0; }
+  .in .bubble { opacity: 1; transform: none; transition: transform 320ms cubic-bezier(.34, 1.56, .64, 1), opacity 200ms ease; transition-delay: var(--d); }
+  .in .snt { transition-delay: calc(120ms + var(--d)); }
+  .in .re { transition-delay: calc(240ms + var(--d)); }
+  .in .dots { opacity: 0; transition: opacity 150ms calc(690ms + var(--d)); }
+  .in .dots i { animation: bounce 450ms ease-in-out calc(240ms + var(--d) + var(--k, 0ms)); }
+  .in .txt { opacity: 1; transition: opacity 200ms calc(690ms + var(--d)); }
+  .in .one { transition: opacity 300ms calc(650ms + var(--d)), transform 300ms calc(650ms + var(--d)); }
+  .instant .bubble, .instant .dots, .instant .dots i, .instant .txt, .instant .one { transition: none; animation: none; }
+  .typing .dots i { animation: bounce 450ms ease-in-out var(--k, 0ms) infinite; }
+  .pop { animation: pop 200ms; }
+  .swap { animation: swap 220ms; }
+  .opt { animation: rise 240ms var(--k, 0ms) both; }
+  .anim { animation: popin 320ms cubic-bezier(.34, 1.56, .64, 1) both; }
+  .qstk { animation: stick 380ms both; }
+  .shake { animation: shake 360ms; }
+  .here { animation: arrive 240ms both; }
+}
+@media (hover: hover) {
+  .icon:hover, .room[aria-pressed="false"]:hover { background: var(--input); }
+  .thread:has(.rcv:hover) .av { animation: wiggle 300ms; }
+}
+/* 데스크톱 레일: --input은 다크에서 --bg와 같아 호버가 안 보임 */
+@media (hover: hover) and (min-width: 960px) { .room[aria-pressed="false"]:hover { background: var(--surface); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes drop { from { transform: translateY(-16px); opacity: 0; } }
+@keyframes bounce { 50% { transform: translateY(-3px); } }
+@keyframes pop { 50% { transform: scale(1.12); } }
+@keyframes swap { 50% { opacity: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+@keyframes popin { from { opacity: 0; transform: translateY(10px) scale(.96); } }
+@keyframes stick { from { transform: scale(.6) rotate(var(--r)); } 70% { transform: scale(1.08) rotate(var(--r)); } }
+@keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+@keyframes ring { 30% { opacity: 1; transform: scale(1.02); } to { opacity: 0; transform: scale(1); } }
+@keyframes wiggle { 33% { transform: rotate(-6deg); } 66% { transform: rotate(6deg); } }
+@keyframes arrive { from { opacity: 0; transform: translateY(-12px) rotate(var(--r)); } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .dots { display: none; }
+  .txt { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <h1 class="title">No Cap 슬랭 사전</h1>
+    <span class="stk" id="members" style="--r:-4deg">74명</span>
+    <button class="icon" id="search-btn" type="button" aria-label="검색">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+    </button>
+  </div>
+  <div class="prog" id="prog" aria-hidden="true"></div>
+</header>
+
+<div class="wrap">
+  <nav class="rooms" id="rooms" aria-label="채팅방">
+    <button class="room" id="room-0" type="button" data-cat="전체" aria-pressed="true" style="--h:-1"><span class="rav all" aria-hidden="true">ALL</span><span class="rtext"><span class="rname">전체</span><span class="rprev" lang="en">That was the best pizza I've ever had, no cap.</span></span><span class="badge">74</span></button>
+    <button class="room" id="room-1" type="button" data-cat="리액션" aria-pressed="false" style="--h:0"><span class="rav" aria-hidden="true">리</span><span class="rtext"><span class="rname">리액션</span><span class="rprev" lang="en">That was the best pizza I've ever had, no cap.</span></span><span class="badge">10</span></button>
+    <button class="room" id="room-2" type="button" data-cat="칭찬" aria-pressed="false" style="--h:1"><span class="rav" aria-hidden="true">칭</span><span class="rtext"><span class="rname">칭찬</span><span class="rprev" lang="en">You slayed that presentation!</span></span><span class="badge">8</span></button>
+    <button class="room" id="room-3" type="button" data-cat="감정" aria-pressed="false" style="--h:2"><span class="rav" aria-hidden="true">감</span><span class="rtext"><span class="rname">감정</span><span class="rprev" lang="en">The movie was kinda mid.</span></span><span class="badge">8</span></button>
+    <button class="room" id="room-4" type="button" data-cat="관계" aria-pressed="false" style="--h:3"><span class="rav" aria-hidden="true">관</span><span class="rtext"><span class="rname">관계</span><span class="rprev" lang="en">She ghosted me after our second date.</span></span><span class="badge">8</span></button>
+    <button class="room" id="room-5" type="button" data-cat="SNS" aria-pressed="false" style="--h:4"><span class="rav" aria-hidden="true">S</span><span class="rtext"><span class="rname">SNS</span><span class="rprev" lang="en">He's just flexing his new car.</span></span><span class="badge">8</span></button>
+    <button class="room" id="room-6" type="button" data-cat="일상·학교" aria-pressed="false" style="--h:5"><span class="rav" aria-hidden="true">일</span><span class="rtext"><span class="rname">일상·학교</span><span class="rprev" lang="en">I crammed all night for the exam.</span></span><span class="badge">6</span></button>
+    <button class="room" id="room-7" type="button" data-cat="돈·일" aria-pressed="false" style="--h:6"><span class="rav" aria-hidden="true">돈</span><span class="rtext"><span class="rname">돈·일</span><span class="rprev" lang="en">I'm broke until payday.</span></span><span class="badge">6</span></button>
+    <button class="room" id="room-8" type="button" data-cat="게임" aria-pressed="false" style="--h:7"><span class="rav" aria-hidden="true">게</span><span class="rtext"><span class="rname">게임</span><span class="rprev" lang="en">GG, that was close.</span></span><span class="badge">7</span></button>
+    <button class="room" id="room-9" type="button" data-cat="외모·패션" aria-pressed="false" style="--h:8"><span class="rav" aria-hidden="true">외</span><span class="rtext"><span class="rname">외모·패션</span><span class="rprev" lang="en">Look at his drip!</span></span><span class="badge">5</span></button>
+    <button class="room" id="room-10" type="button" data-cat="약어" aria-pressed="false" style="--h:9"><span class="rav" aria-hidden="true">약</span><span class="rtext"><span class="rname">약어</span><span class="rprev" lang="en">ngl, that movie was better than I expected.</span></span><span class="badge">8</span></button>
+  </nav>
+  <main class="feed" id="feed">
+    <p class="pill date" id="date">오늘</p>
+    <button class="notice" id="notice" type="button" aria-expanded="false" aria-controls="npanel">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"></path><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z"></path></svg>
+      <span class="ntext"><span class="nlabel" id="nlabel">오늘의 슬랭</span><span class="nword"><b id="nword">no cap</b><span class="nmean" id="nmean">진짜로, 뻥 아님</span></span></span>
+      <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+    </button>
+    <div class="npanel" id="npanel" hidden></div>
+    <p class="pill count arrive" id="count" aria-hidden="true">슬랭 <span class="n">74</span>개가 입장했습니다</p>
+    <span class="sr" id="live" aria-live="polite"></span>
+    <div id="list">
+    <section class="sec" style="--h:0">
+      <div class="sentinel"></div>
+      <p class="pill spill">리액션 방 · 10개</p>
+      <article class="thread reveal" id="no-cap" aria-labelledby="n-no-cap">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-no-cap" type="button" title="뜻 복사">no cap</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">That was the best pizza I've ever had, <b>no cap</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">진짜로, 뻥 아님</span><br><span class="t">내 인생 최고의 피자였어, 진짜로.</span></span></p>
+      </article>
+      <article class="thread reveal" id="bet" aria-labelledby="n-bet">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-bet" type="button" title="뜻 복사">bet</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">&quot;Wanna grab lunch?&quot; &quot;<b>Bet</b>.&quot;</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">좋아, 콜, 알겠어</span><br><span class="t">&quot;점심 먹을래?&quot; &quot;콜.&quot;</span></span></p>
+      </article>
+      <article class="thread reveal" id="lowkey" aria-labelledby="n-lowkey">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-lowkey" type="button" title="뜻 복사">lowkey</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">I <b>lowkey</b> want to skip the party.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">은근히, 살짝 (속마음)</span><br><span class="t">은근 파티 빠지고 싶다.</span></span></p>
+      </article>
+      <article class="thread reveal" id="highkey" aria-labelledby="n-highkey">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-highkey" type="button" title="뜻 복사">highkey</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">I <b>highkey</b> love this song.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">대놓고, 완전</span><br><span class="t">나 이 노래 완전 좋아해.</span></span></p>
+      </article>
+      <article class="thread reveal" id="sus" aria-labelledby="n-sus">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-sus" type="button" title="뜻 복사">sus</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">He's acting kinda <b>sus</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">수상한, 의심스러운</span><br><span class="t">쟤 좀 수상하게 굴어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="caught-in-4k" aria-labelledby="n-caught-in-4k">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-caught-in-4k" type="button" title="뜻 복사">caught in 4K</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">You said you were sick but posted from the mall. <b>Caught in 4K</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">빼도 박도 못하게 딱 걸림</span><br><span class="t">아프다더니 쇼핑몰 사진 올렸네. 딱 걸렸어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="say-less" aria-labelledby="n-say-less">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-say-less" type="button" title="뜻 복사">say less</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">&quot;Wanna get boba?&quot; &quot;<b>Say less</b>.&quot;</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">알겠어, 더 말 안 해도 돼</span><br><span class="t">&quot;버블티 마실래?&quot; &quot;말 안 해도 알지.&quot;</span></span></p>
+      </article>
+      <article class="thread reveal" id="fr" aria-labelledby="n-fr">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-fr" type="button" title="뜻 복사">fr</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">&quot;This class is so boring.&quot; &quot;<b>Fr</b>.&quot;</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">진짜로, 인정 (for real)</span><br><span class="t">&quot;이 수업 너무 지루해.&quot; &quot;인정.&quot;</span></span></p>
+      </article>
+      <article class="thread reveal" id="periodt" aria-labelledby="n-periodt">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-periodt" type="button" title="뜻 복사">periodt</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">She's the best singer in the group. <b>Periodt</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">이상 끝, 반박 불가</span><br><span class="t">걔가 그룹에서 노래 제일 잘해. 끝.</span></span></p>
+      </article>
+      <article class="thread reveal" id="deadass" aria-labelledby="n-deadass">
+        <span class="av" aria-hidden="true">리</span>
+        <div class="who"><button class="name" id="n-deadass" type="button" title="뜻 복사">deadass</button><span class="cat">리액션</span></div>
+        <p class="bubble rcv ex" lang="en">I'm <b>deadass</b> tired today.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">진심으로, 장난 아니고</span><br><span class="t">나 오늘 진짜로 피곤해.</span></span></p>
+      </article>
+    </section>
+    <section class="sec" style="--h:1">
+      <div class="sentinel"></div>
+      <p class="pill spill">칭찬 방 · 8개</p>
+      <article class="thread reveal" id="slay" aria-labelledby="n-slay">
+        <span class="av" aria-hidden="true">칭</span>
+        <div class="who"><button class="name" id="n-slay" type="button" title="뜻 복사">slay</button><span class="cat">칭찬</span></div>
+        <p class="bubble rcv ex" lang="en">You <b>slay</b>ed that presentation!</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">끝내주게 해내다</span><br><span class="t">너 발표 완전 찢었어!</span></span></p>
+      </article>
+      <article class="thread reveal" id="ate" aria-labelledby="n-ate">
+        <span class="av" aria-hidden="true">칭</span>
+        <div class="who"><button class="name" id="n-ate" type="button" title="뜻 복사">ate</button><span class="cat">칭찬</span></div>
+        <p class="bubble rcv ex" lang="en">She <b>ate</b> that performance.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">완벽하게 해냄 (ate that)</span><br><span class="t">그 무대 완전 씹어먹었어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="goat" aria-labelledby="n-goat">
+        <span class="av" aria-hidden="true">칭</span>
+        <div class="who"><button class="name" id="n-goat" type="button" title="뜻 복사">GOAT</button><span class="cat">칭찬</span></div>
+        <p class="bubble rcv ex" lang="en">Messi is the <b>GOAT</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">역대 최고 (Greatest Of All Time)</span><br><span class="t">메시는 역대 최고야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="bussin" aria-labelledby="n-bussin">
+        <span class="av" aria-hidden="true">칭</span>
+        <div class="who"><button class="name" id="n-bussin" type="button" title="뜻 복사">bussin</button><span class="cat">칭찬</span></div>
+        <p class="bubble rcv ex" lang="en">This ramen is <b>bussin</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">(음식이) 존맛</span><br><span class="t">이 라멘 완전 맛있어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="hits-different" aria-labelledby="n-hits-different">
+        <span class="av" aria-hidden="true">칭</span>
+        <div class="who"><button class="name" id="n-hits-different" type="button" title="뜻 복사">hits different</button><span class="cat">칭찬</span></div>
+        <p class="bubble rcv ex" lang="en">Coffee <b>hits different</b> at 6 a.m.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">뭔가 다르게 와닿다</span><br><span class="t">새벽 6시 커피는 느낌이 달라.</span></span></p>
+      </article>
+      <article class="thread reveal" id="it-s-giving" aria-labelledby="n-it-s-giving">
+        <span class="av" aria-hidden="true">칭</span>
+        <div class="who"><button class="name" id="n-it-s-giving" type="button" title="뜻 복사">it's giving</button><span class="cat">칭찬</span></div>
+        <p class="bubble rcv ex" lang="en">That outfit? <b>It's giving</b> main character.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">~ 느낌 난다</span><br><span class="t">그 옷? 완전 주인공 느낌이야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="fire" aria-labelledby="n-fire">
+        <span class="av" aria-hidden="true">칭</span>
+        <div class="who"><button class="name" id="n-fire" type="button" title="뜻 복사">fire</button><span class="cat">칭찬</span></div>
+        <p class="bubble rcv ex" lang="en">Your new haircut is <b>fire</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">끝내주는, 멋진</span><br><span class="t">새로 자른 머리 완전 멋져.</span></span></p>
+      </article>
+      <article class="thread reveal" id="w" aria-labelledby="n-w">
+        <span class="av" aria-hidden="true">칭</span>
+        <div class="who"><button class="name" id="n-w" type="button" title="뜻 복사">W</button><span class="cat">칭찬</span></div>
+        <p class="bubble rcv ex" lang="en">Got the internship. Massive <b>W</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">잘된 일, 승리 (반대는 L)</span><br><span class="t">인턴 붙었어. 완전 대승.</span></span></p>
+      </article>
+    </section>
+    <section class="sec" style="--h:2">
+      <div class="sentinel"></div>
+      <p class="pill spill">감정 방 · 8개</p>
+      <article class="thread reveal" id="mid" aria-labelledby="n-mid">
+        <span class="av" aria-hidden="true">감</span>
+        <div class="who"><button class="name" id="n-mid" type="button" title="뜻 복사">mid</button><span class="cat">감정</span></div>
+        <p class="bubble rcv ex" lang="en">The movie was kinda <b>mid</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">그저 그런, 별로</span><br><span class="t">영화 좀 그저 그랬어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="salty" aria-labelledby="n-salty">
+        <span class="av" aria-hidden="true">감</span>
+        <div class="who"><button class="name" id="n-salty" type="button" title="뜻 복사">salty</button><span class="cat">감정</span></div>
+        <p class="bubble rcv ex" lang="en">Why are you so <b>salty</b> about losing?</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">삐진, 짜증 난</span><br><span class="t">졌다고 왜 그렇게 삐졌어?</span></span></p>
+      </article>
+      <article class="thread reveal" id="fomo" aria-labelledby="n-fomo">
+        <span class="av" aria-hidden="true">감</span>
+        <div class="who"><button class="name" id="n-fomo" type="button" title="뜻 복사">FOMO</button><span class="cat">감정</span></div>
+        <p class="bubble rcv ex" lang="en">I have major <b>FOMO</b> seeing everyone's travel pics.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">나만 놓칠까 봐 불안한 마음</span><br><span class="t">다들 여행 사진 올리니까 나만 뒤처진 기분이야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="down-bad" aria-labelledby="n-down-bad">
+        <span class="av" aria-hidden="true">감</span>
+        <div class="who"><button class="name" id="n-down-bad" type="button" title="뜻 복사">down bad</button><span class="cat">감정</span></div>
+        <p class="bubble rcv ex" lang="en">He's so <b>down bad</b> for her.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">(특히 연애에서) 너무 간절한 상태</span><br><span class="t">걔 그 여자한테 완전 목매고 있어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="i-m-dead" aria-labelledby="n-i-m-dead">
+        <span class="av" aria-hidden="true">감</span>
+        <div class="who"><button class="name" id="n-i-m-dead" type="button" title="뜻 복사">I'm dead</button><span class="cat">감정</span></div>
+        <p class="bubble rcv ex" lang="en">That cat video... <b>I'm dead</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">웃겨 죽겠다</span><br><span class="t">그 고양이 영상… 웃겨 죽겠어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="cringe" aria-labelledby="n-cringe">
+        <span class="av" aria-hidden="true">감</span>
+        <div class="who"><button class="name" id="n-cringe" type="button" title="뜻 복사">cringe</button><span class="cat">감정</span></div>
+        <p class="bubble rcv ex" lang="en">His pickup line was so <b>cringe</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">오글거리는</span><br><span class="t">걔 작업 멘트 완전 오글거렸어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="shook" aria-labelledby="n-shook">
+        <span class="av" aria-hidden="true">감</span>
+        <div class="who"><button class="name" id="n-shook" type="button" title="뜻 복사">shook</button><span class="cat">감정</span></div>
+        <p class="bubble rcv ex" lang="en">I'm still <b>shook</b> from that ending.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">충격받은, 어안이 벙벙한</span><br><span class="t">그 결말 때문에 아직도 충격이야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="i-can-t-even" aria-labelledby="n-i-can-t-even">
+        <span class="av" aria-hidden="true">감</span>
+        <div class="who"><button class="name" id="n-i-can-t-even" type="button" title="뜻 복사">I can't even</button><span class="cat">감정</span></div>
+        <p class="bubble rcv ex" lang="en">He forgot my birthday again. <b>I can't even</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">말이 안 나와 (어이없거나 벅찰 때)</span><br><span class="t">또 내 생일 까먹었어. 진짜 할 말이 없다.</span></span></p>
+      </article>
+    </section>
+    <section class="sec" style="--h:3">
+      <div class="sentinel"></div>
+      <p class="pill spill">관계 방 · 8개</p>
+      <article class="thread reveal" id="ghost" aria-labelledby="n-ghost">
+        <span class="av" aria-hidden="true">관</span>
+        <div class="who"><button class="name" id="n-ghost" type="button" title="뜻 복사">ghost</button><span class="cat">관계</span></div>
+        <p class="bubble rcv ex" lang="en">She <b>ghost</b>ed me after our second date.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">연락 끊고 잠수 타다</span><br><span class="t">두 번째 데이트 후에 잠수 탔어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="rizz" aria-labelledby="n-rizz">
+        <span class="av" aria-hidden="true">관</span>
+        <div class="who"><button class="name" id="n-rizz" type="button" title="뜻 복사">rizz</button><span class="cat">관계</span></div>
+        <p class="bubble rcv ex" lang="en">He's got serious <b>rizz</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">이성을 끄는 매력, 말빨</span><br><span class="t">걔 플러팅 실력 장난 아니야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="situationship" aria-labelledby="n-situationship">
+        <span class="av" aria-hidden="true">관</span>
+        <div class="who"><button class="name" id="n-situationship" type="button" title="뜻 복사">situationship</button><span class="cat">관계</span></div>
+        <p class="bubble rcv ex" lang="en">We're not dating, it's more of a <b>situationship</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">썸도 연애도 아닌 애매한 관계</span><br><span class="t">사귀는 건 아니고, 그냥 애매한 사이야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="spill-the-tea" aria-labelledby="n-spill-the-tea">
+        <span class="av" aria-hidden="true">관</span>
+        <div class="who"><button class="name" id="n-spill-the-tea" type="button" title="뜻 복사">spill the tea</button><span class="cat">관계</span></div>
+        <p class="bubble rcv ex" lang="en">Okay, <b>spill the tea</b>. What happened?</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">썰 풀어봐</span><br><span class="t">자, 썰 풀어봐. 무슨 일이야?</span></span></p>
+      </article>
+      <article class="thread reveal" id="simp" aria-labelledby="n-simp">
+        <span class="av" aria-hidden="true">관</span>
+        <div class="who"><button class="name" id="n-simp" type="button" title="뜻 복사">simp</button><span class="cat">관계</span></div>
+        <p class="bubble rcv ex" lang="en">He bought her a car after one date. Total <b>simp</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">상대에게 과하게 퍼주는 사람</span><br><span class="t">한 번 데이트하고 차를 사줬대. 완전 심프.</span></span></p>
+      </article>
+      <article class="thread reveal" id="ick" aria-labelledby="n-ick">
+        <span class="av" aria-hidden="true">관</span>
+        <div class="who"><button class="name" id="n-ick" type="button" title="뜻 복사">ick</button><span class="cat">관계</span></div>
+        <p class="bubble rcv ex" lang="en">He talked to the waiter like that? Instant <b>ick</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">갑자기 정 떨어지는 순간</span><br><span class="t">종업원한테 그렇게 말했다고? 바로 정 떨어졌어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="ride-or-die" aria-labelledby="n-ride-or-die">
+        <span class="av" aria-hidden="true">관</span>
+        <div class="who"><button class="name" id="n-ride-or-die" type="button" title="뜻 복사">ride or die</button><span class="cat">관계</span></div>
+        <p class="bubble rcv ex" lang="en">She's my <b>ride or die</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">끝까지 함께할 사람</span><br><span class="t">걔는 내 평생 베프야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="stan" aria-labelledby="n-stan">
+        <span class="av" aria-hidden="true">관</span>
+        <div class="who"><button class="name" id="n-stan" type="button" title="뜻 복사">stan</button><span class="cat">관계</span></div>
+        <p class="bubble rcv ex" lang="en">I <b>stan</b> this band so hard.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">열렬한 팬, 덕질하다</span><br><span class="t">나 이 밴드 완전 덕질 중이야.</span></span></p>
+      </article>
+    </section>
+    <section class="sec" style="--h:4">
+      <div class="sentinel"></div>
+      <p class="pill spill">SNS 방 · 8개</p>
+      <article class="thread reveal" id="flex" aria-labelledby="n-flex">
+        <span class="av" aria-hidden="true">S</span>
+        <div class="who"><button class="name" id="n-flex" type="button" title="뜻 복사">flex</button><span class="cat">SNS</span></div>
+        <p class="bubble rcv ex" lang="en">He's just <b>flex</b>ing his new car.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">자랑하다</span><br><span class="t">걔 그냥 새 차 자랑하는 거야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="touch-grass" aria-labelledby="n-touch-grass">
+        <span class="av" aria-hidden="true">S</span>
+        <div class="who"><button class="name" id="n-touch-grass" type="button" title="뜻 복사">touch grass</button><span class="cat">SNS</span></div>
+        <p class="bubble rcv ex" lang="en">You've been online for 10 hours. Go <b>touch grass</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">인터넷 그만하고 밖에 좀 나가</span><br><span class="t">10시간째 온라인이네. 나가서 바람 좀 쐬어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="iykyk" aria-labelledby="n-iykyk">
+        <span class="av" aria-hidden="true">S</span>
+        <div class="who"><button class="name" id="n-iykyk" type="button" title="뜻 복사">IYKYK</button><span class="cat">SNS</span></div>
+        <p class="bubble rcv ex" lang="en">That ramen shop in Yokohama... <b>IYKYK</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">아는 사람은 안다 (If You Know, You Know)</span><br><span class="t">요코하마 그 라멘집… 아는 사람은 알지.</span></span></p>
+      </article>
+      <article class="thread reveal" id="vibe" aria-labelledby="n-vibe">
+        <span class="av" aria-hidden="true">S</span>
+        <div class="who"><button class="name" id="n-vibe" type="button" title="뜻 복사">vibe</button><span class="cat">SNS</span></div>
+        <p class="bubble rcv ex" lang="en">This café has such a good <b>vibe</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">분위기, 느낌</span><br><span class="t">이 카페 분위기 진짜 좋다.</span></span></p>
+      </article>
+      <article class="thread reveal" id="delulu" aria-labelledby="n-delulu">
+        <span class="av" aria-hidden="true">S</span>
+        <div class="who"><button class="name" id="n-delulu" type="button" title="뜻 복사">delulu</button><span class="cat">SNS</span></div>
+        <p class="bubble rcv ex" lang="en">She thinks he'll text back. She's <b>delulu</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">망상에 빠진 (delusional)</span><br><span class="t">걔가 답장할 거라고 믿는대. 완전 망상이야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="doomscrolling" aria-labelledby="n-doomscrolling">
+        <span class="av" aria-hidden="true">S</span>
+        <div class="who"><button class="name" id="n-doomscrolling" type="button" title="뜻 복사">doomscrolling</button><span class="cat">SNS</span></div>
+        <p class="bubble rcv ex" lang="en">I was <b>doomscrolling</b> until 3 a.m.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">안 좋은 뉴스를 끝없이 넘겨 보기</span><br><span class="t">새벽 3시까지 우울한 뉴스만 넘겨 봤어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="ratio" aria-labelledby="n-ratio">
+        <span class="av" aria-hidden="true">S</span>
+        <div class="who"><button class="name" id="n-ratio" type="button" title="뜻 복사">ratio</button><span class="cat">SNS</span></div>
+        <p class="bubble rcv ex" lang="en">Bad take. <b>Ratio</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">원글보다 반박 댓글이 더 많은 좋아요를 받음</span><br><span class="t">별로인 의견이네. 레이시오 당할 듯.</span></span></p>
+      </article>
+      <article class="thread reveal" id="unhinged" aria-labelledby="n-unhinged">
+        <span class="av" aria-hidden="true">S</span>
+        <div class="who"><button class="name" id="n-unhinged" type="button" title="뜻 복사">unhinged</button><span class="cat">SNS</span></div>
+        <p class="bubble rcv ex" lang="en">That tweet was <b>unhinged</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">정신 나간 듯한 (웃기게 과한)</span><br><span class="t">그 트윗 완전 제정신 아니었어.</span></span></p>
+      </article>
+    </section>
+    <section class="sec" style="--h:5">
+      <div class="sentinel"></div>
+      <p class="pill spill">일상·학교 방 · 6개</p>
+      <article class="thread reveal" id="cram" aria-labelledby="n-cram">
+        <span class="av" aria-hidden="true">일</span>
+        <div class="who"><button class="name" id="n-cram" type="button" title="뜻 복사">cram</button><span class="cat">일상·학교</span></div>
+        <p class="bubble rcv ex" lang="en">I <b>cram</b>med all night for the exam.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">벼락치기하다</span><br><span class="t">시험 때문에 밤새 벼락치기 했어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="ace" aria-labelledby="n-ace">
+        <span class="av" aria-hidden="true">일</span>
+        <div class="who"><button class="name" id="n-ace" type="button" title="뜻 복사">ace</button><span class="cat">일상·학교</span></div>
+        <p class="bubble rcv ex" lang="en">I <b>ace</b>d the quiz.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">(시험을) 완전 잘 보다</span><br><span class="t">쪽지시험 완전 잘 봤어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="bomb" aria-labelledby="n-bomb">
+        <span class="av" aria-hidden="true">일</span>
+        <div class="who"><button class="name" id="n-bomb" type="button" title="뜻 복사">bomb</button><span class="cat">일상·학교</span></div>
+        <p class="bubble rcv ex" lang="en">I totally <b>bomb</b>ed that test.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">(시험을) 망치다</span><br><span class="t">그 시험 완전 망했어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="all-nighter" aria-labelledby="n-all-nighter">
+        <span class="av" aria-hidden="true">일</span>
+        <div class="who"><button class="name" id="n-all-nighter" type="button" title="뜻 복사">all-nighter</button><span class="cat">일상·학교</span></div>
+        <p class="bubble rcv ex" lang="en">We pulled an <b>all-nighter</b> to finish the report.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">밤샘 (pull an all-nighter)</span><br><span class="t">보고서 끝내려고 밤샜어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="hangry" aria-labelledby="n-hangry">
+        <span class="av" aria-hidden="true">일</span>
+        <div class="who"><button class="name" id="n-hangry" type="button" title="뜻 복사">hangry</button><span class="cat">일상·학교</span></div>
+        <p class="bubble rcv ex" lang="en">Feed me before I get <b>hangry</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">배고파서 짜증 난 (hungry + angry)</span><br><span class="t">배고파서 성질나기 전에 밥 좀 줘.</span></span></p>
+      </article>
+      <article class="thread reveal" id="adulting" aria-labelledby="n-adulting">
+        <span class="av" aria-hidden="true">일</span>
+        <div class="who"><button class="name" id="n-adulting" type="button" title="뜻 복사">adulting</button><span class="cat">일상·학교</span></div>
+        <p class="bubble rcv ex" lang="en">Paid my bills and did laundry. <b>Adulting</b> is hard.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">어른 노릇 (공과금, 집안일 등)</span><br><span class="t">공과금 내고 빨래했어. 어른 노릇 힘들다.</span></span></p>
+      </article>
+    </section>
+    <section class="sec" style="--h:6">
+      <div class="sentinel"></div>
+      <p class="pill spill">돈·일 방 · 6개</p>
+      <article class="thread reveal" id="broke" aria-labelledby="n-broke">
+        <span class="av" aria-hidden="true">돈</span>
+        <div class="who"><button class="name" id="n-broke" type="button" title="뜻 복사">broke</button><span class="cat">돈·일</span></div>
+        <p class="bubble rcv ex" lang="en">I'm <b>broke</b> until payday.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">돈 없는, 빈털터리</span><br><span class="t">월급날까지 빈털터리야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="side-hustle" aria-labelledby="n-side-hustle">
+        <span class="av" aria-hidden="true">돈</span>
+        <div class="who"><button class="name" id="n-side-hustle" type="button" title="뜻 복사">side hustle</button><span class="cat">돈·일</span></div>
+        <p class="bubble rcv ex" lang="en">Her <b>side hustle</b> makes more than her job.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">부업</span><br><span class="t">걔 부업이 본업보다 돈을 더 벌어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="grind" aria-labelledby="n-grind">
+        <span class="av" aria-hidden="true">돈</span>
+        <div class="who"><button class="name" id="n-grind" type="button" title="뜻 복사">grind</button><span class="cat">돈·일</span></div>
+        <p class="bubble rcv ex" lang="en">Back to the <b>grind</b> on Monday.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">묵묵히 열심히 일하다</span><br><span class="t">월요일엔 다시 열일 모드.</span></span></p>
+      </article>
+      <article class="thread reveal" id="bread" aria-labelledby="n-bread">
+        <span class="av" aria-hidden="true">돈</span>
+        <div class="who"><button class="name" id="n-bread" type="button" title="뜻 복사">bread</button><span class="cat">돈·일</span></div>
+        <p class="bubble rcv ex" lang="en">Gotta get that <b>bread</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">돈</span><br><span class="t">돈 벌어야지.</span></span></p>
+      </article>
+      <article class="thread reveal" id="ballin" aria-labelledby="n-ballin">
+        <span class="av" aria-hidden="true">돈</span>
+        <div class="who"><button class="name" id="n-ballin" type="button" title="뜻 복사">ballin'</button><span class="cat">돈·일</span></div>
+        <p class="bubble rcv ex" lang="en">He's <b>ballin'</b> after that promotion.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">돈 잘 쓰며 잘 살다</span><br><span class="t">걔 승진하고 완전 잘 나가.</span></span></p>
+      </article>
+      <article class="thread reveal" id="quiet-quitting" aria-labelledby="n-quiet-quitting">
+        <span class="av" aria-hidden="true">돈</span>
+        <div class="who"><button class="name" id="n-quiet-quitting" type="button" title="뜻 복사">quiet quitting</button><span class="cat">돈·일</span></div>
+        <p class="bubble rcv ex" lang="en">Half the team is <b>quiet quitting</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">딱 맡은 일만 하기 (조용한 사직)</span><br><span class="t">팀 절반이 딱 할 일만 하고 있어.</span></span></p>
+      </article>
+    </section>
+    <section class="sec" style="--h:7">
+      <div class="sentinel"></div>
+      <p class="pill spill">게임 방 · 7개</p>
+      <article class="thread reveal" id="gg" aria-labelledby="n-gg">
+        <span class="av" aria-hidden="true">게</span>
+        <div class="who"><button class="name" id="n-gg" type="button" title="뜻 복사">GG</button><span class="cat">게임</span></div>
+        <p class="bubble rcv ex" lang="en"><b>GG</b>, that was close.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">수고했어, 좋은 게임이었어 (Good Game)</span><br><span class="t">GG, 아슬아슬했다.</span></span></p>
+      </article>
+      <article class="thread reveal" id="noob" aria-labelledby="n-noob">
+        <span class="av" aria-hidden="true">게</span>
+        <div class="who"><button class="name" id="n-noob" type="button" title="뜻 복사">noob</button><span class="cat">게임</span></div>
+        <p class="bubble rcv ex" lang="en">Everyone's a <b>noob</b> at first.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">초보, 뉴비</span><br><span class="t">처음엔 다 뉴비야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="op" aria-labelledby="n-op">
+        <span class="av" aria-hidden="true">게</span>
+        <div class="who"><button class="name" id="n-op" type="button" title="뜻 복사">OP</button><span class="cat">게임</span></div>
+        <p class="bubble rcv ex" lang="en">That character is so <b>OP</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">사기급으로 센 (overpowered)</span><br><span class="t">그 캐릭터 완전 사기야.</span></span></p>
+      </article>
+      <article class="thread reveal" id="nerf" aria-labelledby="n-nerf">
+        <span class="av" aria-hidden="true">게</span>
+        <div class="who"><button class="name" id="n-nerf" type="button" title="뜻 복사">nerf</button><span class="cat">게임</span></div>
+        <p class="bubble rcv ex" lang="en">They <b>nerf</b>ed my favorite weapon.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">성능을 깎다, 너프하다</span><br><span class="t">내가 제일 좋아하는 무기 너프됐어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="clutch" aria-labelledby="n-clutch">
+        <span class="av" aria-hidden="true">게</span>
+        <div class="who"><button class="name" id="n-clutch" type="button" title="뜻 복사">clutch</button><span class="cat">게임</span></div>
+        <p class="bubble rcv ex" lang="en">He <b>clutch</b>ed the final round.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">결정적 순간에 해내다</span><br><span class="t">걔가 마지막 라운드 캐리했어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="afk" aria-labelledby="n-afk">
+        <span class="av" aria-hidden="true">게</span>
+        <div class="who"><button class="name" id="n-afk" type="button" title="뜻 복사">AFK</button><span class="cat">게임</span></div>
+        <p class="bubble rcv ex" lang="en">brb, <b>AFK</b> for 5 min.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">자리 비움 (Away From Keyboard)</span><br><span class="t">금방 올게, 5분 자리 비움.</span></span></p>
+      </article>
+      <article class="thread reveal" id="rage-quit" aria-labelledby="n-rage-quit">
+        <span class="av" aria-hidden="true">게</span>
+        <div class="who"><button class="name" id="n-rage-quit" type="button" title="뜻 복사">rage quit</button><span class="cat">게임</span></div>
+        <p class="bubble rcv ex" lang="en">I <b>rage quit</b> after losing ten times.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">빡쳐서 게임 꺼버리기</span><br><span class="t">열 번 지고 빡쳐서 게임 껐어.</span></span></p>
+      </article>
+    </section>
+    <section class="sec" style="--h:8">
+      <div class="sentinel"></div>
+      <p class="pill spill">외모·패션 방 · 5개</p>
+      <article class="thread reveal" id="drip" aria-labelledby="n-drip">
+        <span class="av" aria-hidden="true">외</span>
+        <div class="who"><button class="name" id="n-drip" type="button" title="뜻 복사">drip</button><span class="cat">외모·패션</span></div>
+        <p class="bubble rcv ex" lang="en">Look at his <b>drip</b>!</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">멋진 스타일, 간지</span><br><span class="t">쟤 패션 봐, 간지 난다!</span></span></p>
+      </article>
+      <article class="thread reveal" id="fit" aria-labelledby="n-fit">
+        <span class="av" aria-hidden="true">외</span>
+        <div class="who"><button class="name" id="n-fit" type="button" title="뜻 복사">fit</button><span class="cat">외모·패션</span></div>
+        <p class="bubble rcv ex" lang="en"><b>Fit</b> check!</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">오늘의 코디 (outfit)</span><br><span class="t">오늘 코디 보여줘!</span></span></p>
+      </article>
+      <article class="thread reveal" id="glow-up" aria-labelledby="n-glow-up">
+        <span class="av" aria-hidden="true">외</span>
+        <div class="who"><button class="name" id="n-glow-up" type="button" title="뜻 복사">glow up</button><span class="cat">외모·패션</span></div>
+        <p class="bubble rcv ex" lang="en">She had a major <b>glow up</b> over the summer.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">환골탈태, 확 예뻐짐</span><br><span class="t">걔 여름 사이에 완전 환골탈태했어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="snatched" aria-labelledby="n-snatched">
+        <span class="av" aria-hidden="true">외</span>
+        <div class="who"><button class="name" id="n-snatched" type="button" title="뜻 복사">snatched</button><span class="cat">외모·패션</span></div>
+        <p class="bubble rcv ex" lang="en">Your makeup is <b>snatched</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">(메이크업·몸매가) 완벽한</span><br><span class="t">메이크업 완전 완벽해.</span></span></p>
+      </article>
+      <article class="thread reveal" id="clean" aria-labelledby="n-clean">
+        <span class="av" aria-hidden="true">외</span>
+        <div class="who"><button class="name" id="n-clean" type="button" title="뜻 복사">clean</button><span class="cat">외모·패션</span></div>
+        <p class="bubble rcv ex" lang="en">Those sneakers are <b>clean</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">깔끔하고 멋진</span><br><span class="t">그 운동화 완전 깔끔하다.</span></span></p>
+      </article>
+    </section>
+    <section class="sec" style="--h:9">
+      <div class="sentinel"></div>
+      <p class="pill spill">약어 방 · 8개</p>
+      <article class="thread reveal" id="ngl" aria-labelledby="n-ngl">
+        <span class="av" aria-hidden="true">약</span>
+        <div class="who"><button class="name" id="n-ngl" type="button" title="뜻 복사">ngl</button><span class="cat">약어</span></div>
+        <p class="bubble rcv ex" lang="en"><b>ngl</b>, that movie was better than I expected.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">솔직히 말하면 (not gonna lie)</span><br><span class="t">솔직히 그 영화 생각보다 괜찮았어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="tbh" aria-labelledby="n-tbh">
+        <span class="av" aria-hidden="true">약</span>
+        <div class="who"><button class="name" id="n-tbh" type="button" title="뜻 복사">tbh</button><span class="cat">약어</span></div>
+        <p class="bubble rcv ex" lang="en"><b>tbh</b> I didn't study at all.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">솔직히 (to be honest)</span><br><span class="t">솔직히 공부 하나도 안 했어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="idk" aria-labelledby="n-idk">
+        <span class="av" aria-hidden="true">약</span>
+        <div class="who"><button class="name" id="n-idk" type="button" title="뜻 복사">idk</button><span class="cat">약어</span></div>
+        <p class="bubble rcv ex" lang="en"><b>idk</b> what to eat tonight.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">몰라 (I don't know)</span><br><span class="t">오늘 저녁 뭐 먹을지 모르겠어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="ikr" aria-labelledby="n-ikr">
+        <span class="av" aria-hidden="true">약</span>
+        <div class="who"><button class="name" id="n-ikr" type="button" title="뜻 복사">ikr</button><span class="cat">약어</span></div>
+        <p class="bubble rcv ex" lang="en">&quot;This weather is awful.&quot; &quot;<b>ikr</b>.&quot;</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">그니까, 내 말이 (I know, right?)</span><br><span class="t">&quot;날씨 진짜 별로다.&quot; &quot;그니까.&quot;</span></span></p>
+      </article>
+      <article class="thread reveal" id="smh" aria-labelledby="n-smh">
+        <span class="av" aria-hidden="true">약</span>
+        <div class="who"><button class="name" id="n-smh" type="button" title="뜻 복사">smh</button><span class="cat">약어</span></div>
+        <p class="bubble rcv ex" lang="en">He forgot his keys again. <b>smh</b>.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">한심해서 고개 젓는 중 (shaking my head)</span><br><span class="t">또 열쇠 두고 왔대. 한심하다.</span></span></p>
+      </article>
+      <article class="thread reveal" id="imo" aria-labelledby="n-imo">
+        <span class="av" aria-hidden="true">약</span>
+        <div class="who"><button class="name" id="n-imo" type="button" title="뜻 복사">imo</button><span class="cat">약어</span></div>
+        <p class="bubble rcv ex" lang="en"><b>imo</b>, the first season was the best.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>?? 해석 좀</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">내 생각엔 (in my opinion)</span><br><span class="t">내 생각엔 시즌 1이 제일 나았어.</span></span></p>
+      </article>
+      <article class="thread reveal" id="brb" aria-labelledby="n-brb">
+        <span class="av" aria-hidden="true">약</span>
+        <div class="who"><button class="name" id="n-brb" type="button" title="뜻 복사">brb</button><span class="cat">약어</span></div>
+        <p class="bubble rcv ex" lang="en"><b>brb</b>, grabbing coffee.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>뭔 뜻이야 ㅋㅋ</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">금방 올게 (be right back)</span><br><span class="t">금방 올게, 커피 좀 사 오려고.</span></span></p>
+      </article>
+      <article class="thread reveal" id="tl-dr" aria-labelledby="n-tl-dr">
+        <span class="av" aria-hidden="true">약</span>
+        <div class="who"><button class="name" id="n-tl-dr" type="button" title="뜻 복사">tl;dr</button><span class="cat">약어</span></div>
+        <p class="bubble rcv ex" lang="en"><b>tl;dr</b>: the meeting moved to Friday.</p>
+        <p class="bubble snt"><span class="one" aria-hidden="true">1</span>그게 뭔데</p>
+        <p class="bubble rcv re"><span class="txt"><span class="m">요약하자면 (too long; didn't read)</span><br><span class="t">요약: 회의 금요일로 옮겨짐.</span></span></p>
+      </article>
+    </section>
+    </div>
+    <article class="thread" id="empty" hidden>
+      <span class="av bot" aria-hidden="true">N</span>
+      <div class="who"><span class="name">No Cap 봇</span></div>
+      <p class="bubble rcv">그 단어는 아직 없어요 ㅠ 다른 말로 검색해볼래?</p>
+      <button class="btn2 reset" id="reset" type="button">전체 보기</button>
+    </article>
+    <footer class="foot">
+      <p class="pill warn">슬랭은 친한 사이에서만 ㅇㅇ. 면접이나 업무 메일에서 쓰면 그건 좀 sus.</p>
+      <p class="divider">대화가 더 없어요</p>
+      <button class="btn2" id="top" type="button">맨 위로</button>
+    </footer>
+    <form class="composer" id="composer" role="search">
+      <input class="q" id="q" type="search" placeholder="검색: sus, 수상한, 칭찬…" aria-label="슬랭 검색" autocomplete="off">
+      <button class="btn" id="go" type="submit">검색</button>
+    </form>
+  </main>
+</div>
+<div class="toast" id="toast" role="status">
+  <svg class="tcheck" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>
+  <span id="tmsg"></span>
+  <span class="stk tstk" style="--fill:var(--good);--r:3deg" aria-hidden="true">폼 미쳤다</span>
+</div>
+
+<script>
+document.documentElement.classList.add("js");
+const SLANG = [
+  ["no cap", "리액션", "진짜로, 뻥 아님", "That was the best pizza I've ever had, no cap.", "내 인생 최고의 피자였어, 진짜로."],
+  ["bet", "리액션", "좋아, 콜, 알겠어", "\"Wanna grab lunch?\" \"Bet.\"", "\"점심 먹을래?\" \"콜.\""],
+  ["lowkey", "리액션", "은근히, 살짝 (속마음)", "I lowkey want to skip the party.", "은근 파티 빠지고 싶다."],
+  ["highkey", "리액션", "대놓고, 완전", "I highkey love this song.", "나 이 노래 완전 좋아해."],
+  ["sus", "리액션", "수상한, 의심스러운", "He's acting kinda sus.", "쟤 좀 수상하게 굴어."],
+  ["caught in 4K", "리액션", "빼도 박도 못하게 딱 걸림", "You said you were sick but posted from the mall. Caught in 4K.", "아프다더니 쇼핑몰 사진 올렸네. 딱 걸렸어."],
+  ["slay", "칭찬", "끝내주게 해내다", "You slayed that presentation!", "너 발표 완전 찢었어!"],
+  ["ate", "칭찬", "완벽하게 해냄 (ate that)", "She ate that performance.", "그 무대 완전 씹어먹었어."],
+  ["GOAT", "칭찬", "역대 최고 (Greatest Of All Time)", "Messi is the GOAT.", "메시는 역대 최고야."],
+  ["bussin", "칭찬", "(음식이) 존맛", "This ramen is bussin.", "이 라멘 완전 맛있어."],
+  ["hits different", "칭찬", "뭔가 다르게 와닿다", "Coffee hits different at 6 a.m.", "새벽 6시 커피는 느낌이 달라."],
+  ["it's giving", "칭찬", "~ 느낌 난다", "That outfit? It's giving main character.", "그 옷? 완전 주인공 느낌이야."],
+  ["mid", "감정", "그저 그런, 별로", "The movie was kinda mid.", "영화 좀 그저 그랬어."],
+  ["salty", "감정", "삐진, 짜증 난", "Why are you so salty about losing?", "졌다고 왜 그렇게 삐졌어?"],
+  ["FOMO", "감정", "나만 놓칠까 봐 불안한 마음", "I have major FOMO seeing everyone's travel pics.", "다들 여행 사진 올리니까 나만 뒤처진 기분이야."],
+  ["down bad", "감정", "(특히 연애에서) 너무 간절한 상태", "He's so down bad for her.", "걔 그 여자한테 완전 목매고 있어."],
+  ["ghost", "관계", "연락 끊고 잠수 타다", "She ghosted me after our second date.", "두 번째 데이트 후에 잠수 탔어."],
+  ["rizz", "관계", "이성을 끄는 매력, 말빨", "He's got serious rizz.", "걔 플러팅 실력 장난 아니야."],
+  ["situationship", "관계", "썸도 연애도 아닌 애매한 관계", "We're not dating, it's more of a situationship.", "사귀는 건 아니고, 그냥 애매한 사이야."],
+  ["spill the tea", "관계", "썰 풀어봐", "Okay, spill the tea. What happened?", "자, 썰 풀어봐. 무슨 일이야?"],
+  ["flex", "SNS", "자랑하다", "He's just flexing his new car.", "걔 그냥 새 차 자랑하는 거야."],
+  ["touch grass", "SNS", "인터넷 그만하고 밖에 좀 나가", "You've been online for 10 hours. Go touch grass.", "10시간째 온라인이네. 나가서 바람 좀 쐬어."],
+  ["IYKYK", "SNS", "아는 사람은 안다 (If You Know, You Know)", "That ramen shop in Yokohama... IYKYK.", "요코하마 그 라멘집… 아는 사람은 알지."],
+  ["vibe", "SNS", "분위기, 느낌", "This café has such a good vibe.", "이 카페 분위기 진짜 좋다."],
+  ["say less", "리액션", "알겠어, 더 말 안 해도 돼", "\"Wanna get boba?\" \"Say less.\"", "\"버블티 마실래?\" \"말 안 해도 알지.\""],
+  ["fr", "리액션", "진짜로, 인정 (for real)", "\"This class is so boring.\" \"Fr.\"", "\"이 수업 너무 지루해.\" \"인정.\""],
+  ["periodt", "리액션", "이상 끝, 반박 불가", "She's the best singer in the group. Periodt.", "걔가 그룹에서 노래 제일 잘해. 끝."],
+  ["deadass", "리액션", "진심으로, 장난 아니고", "I'm deadass tired today.", "나 오늘 진짜로 피곤해."],
+  ["fire", "칭찬", "끝내주는, 멋진", "Your new haircut is fire.", "새로 자른 머리 완전 멋져."],
+  ["W", "칭찬", "잘된 일, 승리 (반대는 L)", "Got the internship. Massive W.", "인턴 붙었어. 완전 대승."],
+  ["I'm dead", "감정", "웃겨 죽겠다", "That cat video... I'm dead.", "그 고양이 영상… 웃겨 죽겠어."],
+  ["cringe", "감정", "오글거리는", "His pickup line was so cringe.", "걔 작업 멘트 완전 오글거렸어."],
+  ["shook", "감정", "충격받은, 어안이 벙벙한", "I'm still shook from that ending.", "그 결말 때문에 아직도 충격이야."],
+  ["I can't even", "감정", "말이 안 나와 (어이없거나 벅찰 때)", "He forgot my birthday again. I can't even.", "또 내 생일 까먹었어. 진짜 할 말이 없다."],
+  ["simp", "관계", "상대에게 과하게 퍼주는 사람", "He bought her a car after one date. Total simp.", "한 번 데이트하고 차를 사줬대. 완전 심프."],
+  ["ick", "관계", "갑자기 정 떨어지는 순간", "He talked to the waiter like that? Instant ick.", "종업원한테 그렇게 말했다고? 바로 정 떨어졌어."],
+  ["ride or die", "관계", "끝까지 함께할 사람", "She's my ride or die.", "걔는 내 평생 베프야."],
+  ["stan", "관계", "열렬한 팬, 덕질하다", "I stan this band so hard.", "나 이 밴드 완전 덕질 중이야."],
+  ["delulu", "SNS", "망상에 빠진 (delusional)", "She thinks he'll text back. She's delulu.", "걔가 답장할 거라고 믿는대. 완전 망상이야."],
+  ["doomscrolling", "SNS", "안 좋은 뉴스를 끝없이 넘겨 보기", "I was doomscrolling until 3 a.m.", "새벽 3시까지 우울한 뉴스만 넘겨 봤어."],
+  ["ratio", "SNS", "원글보다 반박 댓글이 더 많은 좋아요를 받음", "Bad take. Ratio.", "별로인 의견이네. 레이시오 당할 듯."],
+  ["unhinged", "SNS", "정신 나간 듯한 (웃기게 과한)", "That tweet was unhinged.", "그 트윗 완전 제정신 아니었어."],
+  ["cram", "일상·학교", "벼락치기하다", "I crammed all night for the exam.", "시험 때문에 밤새 벼락치기 했어."],
+  ["ace", "일상·학교", "(시험을) 완전 잘 보다", "I aced the quiz.", "쪽지시험 완전 잘 봤어."],
+  ["bomb", "일상·학교", "(시험을) 망치다", "I totally bombed that test.", "그 시험 완전 망했어."],
+  ["all-nighter", "일상·학교", "밤샘 (pull an all-nighter)", "We pulled an all-nighter to finish the report.", "보고서 끝내려고 밤샜어."],
+  ["hangry", "일상·학교", "배고파서 짜증 난 (hungry + angry)", "Feed me before I get hangry.", "배고파서 성질나기 전에 밥 좀 줘."],
+  ["adulting", "일상·학교", "어른 노릇 (공과금, 집안일 등)", "Paid my bills and did laundry. Adulting is hard.", "공과금 내고 빨래했어. 어른 노릇 힘들다."],
+  ["broke", "돈·일", "돈 없는, 빈털터리", "I'm broke until payday.", "월급날까지 빈털터리야."],
+  ["side hustle", "돈·일", "부업", "Her side hustle makes more than her job.", "걔 부업이 본업보다 돈을 더 벌어."],
+  ["grind", "돈·일", "묵묵히 열심히 일하다", "Back to the grind on Monday.", "월요일엔 다시 열일 모드."],
+  ["bread", "돈·일", "돈", "Gotta get that bread.", "돈 벌어야지."],
+  ["ballin'", "돈·일", "돈 잘 쓰며 잘 살다", "He's ballin' after that promotion.", "걔 승진하고 완전 잘 나가."],
+  ["quiet quitting", "돈·일", "딱 맡은 일만 하기 (조용한 사직)", "Half the team is quiet quitting.", "팀 절반이 딱 할 일만 하고 있어."],
+  ["GG", "게임", "수고했어, 좋은 게임이었어 (Good Game)", "GG, that was close.", "GG, 아슬아슬했다."],
+  ["noob", "게임", "초보, 뉴비", "Everyone's a noob at first.", "처음엔 다 뉴비야."],
+  ["OP", "게임", "사기급으로 센 (overpowered)", "That character is so OP.", "그 캐릭터 완전 사기야."],
+  ["nerf", "게임", "성능을 깎다, 너프하다", "They nerfed my favorite weapon.", "내가 제일 좋아하는 무기 너프됐어."],
+  ["clutch", "게임", "결정적 순간에 해내다", "He clutched the final round.", "걔가 마지막 라운드 캐리했어."],
+  ["AFK", "게임", "자리 비움 (Away From Keyboard)", "brb, AFK for 5 min.", "금방 올게, 5분 자리 비움."],
+  ["rage quit", "게임", "빡쳐서 게임 꺼버리기", "I rage quit after losing ten times.", "열 번 지고 빡쳐서 게임 껐어."],
+  ["drip", "외모·패션", "멋진 스타일, 간지", "Look at his drip!", "쟤 패션 봐, 간지 난다!"],
+  ["fit", "외모·패션", "오늘의 코디 (outfit)", "Fit check!", "오늘 코디 보여줘!"],
+  ["glow up", "외모·패션", "환골탈태, 확 예뻐짐", "She had a major glow up over the summer.", "걔 여름 사이에 완전 환골탈태했어."],
+  ["snatched", "외모·패션", "(메이크업·몸매가) 완벽한", "Your makeup is snatched.", "메이크업 완전 완벽해."],
+  ["clean", "외모·패션", "깔끔하고 멋진", "Those sneakers are clean.", "그 운동화 완전 깔끔하다."],
+  ["ngl", "약어", "솔직히 말하면 (not gonna lie)", "ngl, that movie was better than I expected.", "솔직히 그 영화 생각보다 괜찮았어."],
+  ["tbh", "약어", "솔직히 (to be honest)", "tbh I didn't study at all.", "솔직히 공부 하나도 안 했어."],
+  ["idk", "약어", "몰라 (I don't know)", "idk what to eat tonight.", "오늘 저녁 뭐 먹을지 모르겠어."],
+  ["ikr", "약어", "그니까, 내 말이 (I know, right?)", "\"This weather is awful.\" \"ikr.\"", "\"날씨 진짜 별로다.\" \"그니까.\""],
+  ["smh", "약어", "한심해서 고개 젓는 중 (shaking my head)", "He forgot his keys again. smh.", "또 열쇠 두고 왔대. 한심하다."],
+  ["imo", "약어", "내 생각엔 (in my opinion)", "imo, the first season was the best.", "내 생각엔 시즌 1이 제일 나았어."],
+  ["brb", "약어", "금방 올게 (be right back)", "brb, grabbing coffee.", "금방 올게, 커피 좀 사 오려고."],
+  ["tl;dr", "약어", "요약하자면 (too long; didn't read)", "tl;dr: the meeting moved to Friday.", "요약: 회의 금요일로 옮겨짐."]
+].map(([word, cat, mean, ex, ko]) => ({ word, cat, mean, ex, ko }));
+
+const CATS = ["전체", ...new Set(SLANG.map(s => s.cat))];
+const $ = id => document.getElementById(id);
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const smooth = RM ? "auto" : "smooth";
+const slug = w => w.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const hide = e => { e.setAttribute("aria-hidden", "true"); return e; };
+const bubble = (cls, text) => el("p", "bubble " + cls, text);
+const sticker = (text, fill, r) => { const s = hide(el("span", "stk", text)); s.style.setProperty("--fill", fill); s.style.setProperty("--r", r); return s; };
+const dotsEl = () => { const d = hide(el("span", "dots")); for (let k = 0; k < 3; k++) { const i = el("i"); i.style.setProperty("--k", k * 120 + "ms"); d.append(i); } return d; };
+// 같은 keyframe을 다시 재생하려면 클래스를 뗐다 붙이는 사이에 리플로우가 필요
+const replay = (e, c) => { e.classList.remove(c); void e.offsetWidth; e.classList.add(c); };
+
+const feed = $("feed"), list = $("list"), qInput = $("q"), countPill = $("count"), live = $("live"), composer = $("composer"), toastEl = $("toast");
+const num = el("span", "n");
+const ASK = ["뭔 뜻이야 ㅋㅋ", "그게 뭔데", "?? 해석 좀"];
+let room = "전체";
+$("members").textContent = SLANG.length + "명";
+
+// 채팅방 목록 — 정적 마크업을 하이드레이트 (데스크톱 레일 / 모바일 탭을 DOM 하나로)
+const ROOMS = [...$("rooms").querySelectorAll(".room")];
+ROOMS.forEach(b => { b.onclick = () => setRoom(b.dataset.cat); });
+
+function thread(s, i, typing) {
+  const id = slug(s.word);
+  const a = el("article", "thread reveal"); a.id = id;
+  const name = el("button", "name"); name.type = "button"; name.id = "n-" + id; name.title = "뜻 복사"; name.onclick = () => share(id);
+  a.setAttribute("aria-labelledby", name.id);
+  const who = el("div", "who"); who.append(name, el("span", "cat", s.cat));
+  const ex = bubble("rcv ex"); ex.lang = "en";
+  const snt = bubble("snt", ASK[i % 3]); snt.prepend(hide(el("span", "one", "1")));
+  const re = bubble("rcv re"), m = el("span", "m"), t = el("span", "t"), txt = el("span", "txt");
+  txt.append(m, el("br"), t); re.append(txt);
+  if (typing) { a.dataset.typing = ""; re.prepend(dotsEl()); }
+  a.append(hide(el("span", "av", s.cat[0])), who, ex, snt, re);
+  return { s, el: a, name, ex, m, t };
+}
+
+// 검색 하이라이트: 텍스트 노드 + <mark> 요소만 조립 (HTML 문자열 삽입 없음)
+function mark(node, text, q) {
+  if (!q) { node.textContent = text; return; }
+  const lo = text.toLowerCase(), frag = document.createDocumentFragment();
+  let i = 0, j;
+  while ((j = lo.indexOf(q, i)) !== -1) { frag.append(text.slice(i, j), el("mark", "", text.slice(j, j + q.length))); i = j + q.length; }
+  frag.append(text.slice(i));
+  node.replaceChildren(frag);
+}
+function paintEx(node, s, q) {
+  if (q) return mark(node, s.ex, q);
+  const j = s.ex.toLowerCase().indexOf(s.word.toLowerCase());
+  if (j < 0) { node.textContent = s.ex; return; }
+  node.replaceChildren(s.ex.slice(0, j), el("b", "", s.ex.slice(j, j + s.word.length)), s.ex.slice(j + s.word.length));
+}
+function paint(it, q) { mark(it.name, it.s.word, q); paintEx(it.ex, it.s, q); mark(it.m, it.s.mean, q); mark(it.t, it.s.ko, q); }
+
+// 정적 스레드 하이드레이트: SLANG은 검색/페인트 데이터로만 쓰고 DOM은 마크업 그대로
+const BY_ID = Object.fromEntries(SLANG.map(s => [slug(s.word), s]));
+function hydrate(a, typing) {
+  const q = c => a.querySelector(c), name = q(".name");
+  name.onclick = () => share(a.id);
+  if (typing) { a.dataset.typing = ""; q(".re").prepend(dotsEl()); }
+  return { s: BY_ID[a.id], el: a, name, ex: q(".ex"), m: q(".m"), t: q(".t") };
+}
+const ITEMS = [];
+const SECS = [...list.querySelectorAll(".sec")].map(sec => ({ el: sec, items: [...sec.querySelectorAll(".thread")].map(a => { const it = hydrate(a, ITEMS.length < 3); ITEMS.push(it); return it; }) }));
+
+// 오늘의 슬랭 + 날짜 시드 퀴즈 (모두 같은 날 같은 문제)
+const day = Math.floor(Date.now() / 864e5), todayIdx = day % SLANG.length, today = SLANG[todayIdx];
+const now = new Date();
+$("date").textContent = "오늘 · " + now.toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "long" });
+$("nlabel").textContent = "오늘의 슬랭 · " + now.toLocaleDateString("ko-KR", { month: "long", day: "numeric" });
+$("nword").textContent = today.word; $("nmean").textContent = today.mean;
+const nt = thread(today, 0, true);
+nt.el.removeAttribute("id"); nt.name.id = "n-today"; nt.el.setAttribute("aria-labelledby", "n-today");
+nt.el.classList.add("notice-thread"); nt.el.style.setProperty("--h", CATS.indexOf(today.cat) - 1);
+paint(nt, "");
+
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rng = mulberry32(day);
+const shuffle = arr => { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; };
+const OPTS = shuffle([today.mean, ...shuffle(SLANG.map((_, i) => i).filter(i => i !== todayIdx)).slice(0, 3).map(i => SLANG[i].mean)]);
+const quiz = el("div", "quiz"), opts = el("div", "opts");
+quiz.append(bubble("rcv", "근데 내 뜻 알아? 골라봐 ㅋㅋ"), opts);
+OPTS.forEach((o, k) => { const b = el("button", "btn2 opt", o); b.type = "button"; b.id = "opt-" + k; b.style.setProperty("--k", k * 60 + "ms"); b.onclick = () => answer(o, false); opts.append(b); });
+$("npanel").append(nt.el, quiz);
+
+function answer(pick, instant) {
+  const ok = pick === today.mean, snt = bubble("snt", pick), re = bubble("rcv re");
+  opts.replaceWith(snt); quiz.append(re);
+  const fin = () => {
+    re.classList.remove("typing");
+    re.textContent = ok ? "ㅇㅈ 정답 ㅋㅋㅋ 폼 미쳤다" : "아 아깝 ㅠ 정답은 → " + today.mean;
+    const st = sticker(ok ? "정답" : "아깝", ok ? "var(--good)" : "var(--bad)", ok ? "5deg" : "-5deg"); st.classList.add("qstk"); re.append(st);
+    if (!ok && !instant) snt.classList.add("shake");
+  };
+  if (instant || RM) fin(); else { snt.classList.add("anim"); re.classList.add("anim", "typing"); re.append(dotsEl()); setTimeout(fin, 450); }
+  try { localStorage.setItem("nocap.quiz", JSON.stringify({ day, pick })); } catch {}
+}
+$("notice").onclick = () => { const open = $("notice").getAttribute("aria-expanded") !== "true"; $("notice").setAttribute("aria-expanded", open); $("npanel").hidden = !open; };
+
+// 필터: hidden 토글만 (재렌더 없음 → 등장 애니메이션 리플레이 없음)
+const matches = (s, q) => (room === "전체" || s.cat === room) && (!q || [s.word, s.mean, s.cat, s.ex, s.ko].some(t => t.toLowerCase().includes(q)));
+function applyFilter(user) {
+  const raw = qInput.value.trim(), q = raw.toLowerCase();
+  let n = 0;
+  SECS.forEach(sec => {
+    let v = 0;
+    sec.items.forEach(it => { const ok = matches(it.s, q); it.el.hidden = !ok; if (ok) { v++; paint(it, q); } });
+    sec.el.hidden = !v; n += v;
+  });
+  $("empty").hidden = n > 0;
+  if (user) instantIn();
+  setCount(n, q ? [`'${raw}' 검색 결과 `, "개"] : [room === "전체" ? "슬랭 " : room + " 슬랭 ", "개가 입장했습니다"], !user);
+}
+function setRoom(c) {
+  room = c;
+  ROOMS.forEach(b => b.setAttribute("aria-pressed", b.dataset.cat === c));
+  applyFilter(true);
+  replay(feed, "swap");
+}
+let cur = 0, tick = 0;
+function setCount(n, [pre, post], silent) {
+  countPill.replaceChildren(pre, num, post);
+  const sentence = pre + n + post;
+  if (silent || RM || cur === n) { tick++; num.textContent = n; cur = n; live.textContent = sentence; return; }
+  const from = cur, t0 = performance.now(), my = ++tick;
+  cur = n;
+  countPill.classList.remove("arrive"); replay(countPill, "pop");
+  const step = t => {
+    if (my !== tick) return;
+    const p = Math.min(1, (t - t0) / 350), e = 1 - (1 - p) ** 3;
+    num.textContent = Math.round(from + (n - from) * e);
+    if (p < 1) requestAnimationFrame(step); else live.textContent = sentence;
+  };
+  requestAnimationFrame(step);
+}
+
+// 스크롤 팝인 + 읽기 진행 바: IO 하나로 (스크롤 리스너 0)
+let done = !window.IntersectionObserver; // IO 폴백은 전부 .in이라 완독 토스트 생략
+function updateRead() {
+  const n = list.querySelectorAll(".reveal.in").length;
+  document.documentElement.style.setProperty("--read", n / SLANG.length);
+  $("prog").title = `읽은 슬랭 ${n}/${SLANG.length}`;
+  if (n === SLANG.length && !done) { done = true; toast(`${SLANG.length}개 다 읽음 ㅋㅋ`, "stk"); }
+}
+// IO 없는 환경: 전부 바로 보이게 (진행 바만 0에 머묾)
+const IO = window.IntersectionObserver || class { observe(t) { t.classList.add("in"); } unobserve() {} };
+const io = new IO(es => {
+  let i = 0;
+  es.forEach(e => { if (!e.isIntersecting) return; e.target.style.setProperty("--i", Math.min(i++, 6)); e.target.classList.add("in"); io.unobserve(e.target); });
+  updateRead();
+}, { threshold: .35, rootMargin: "0px 0px -8% 0px" });
+function instantIn() {
+  list.querySelectorAll(".reveal:not(.in)").forEach(t => {
+    const r = t.getBoundingClientRect();
+    if (r.height && r.top < innerHeight && r.bottom > 0) { t.classList.add("in", "instant"); io.unobserve(t); }
+  });
+  updateRead();
+}
+const sio = new IO(es => es.forEach(e => e.target.nextElementSibling.classList.toggle("stuck", !e.isIntersecting && e.boundingClientRect.top < 0)), { threshold: 0 });
+
+// 단어 공유 + 딥링크 도착
+// shortcut: 아티팩트 iframe 안에서는 location.href가 공유 가능한 주소가 아니라 링크 대신 단어+뜻 텍스트를 복사, 자체 도메인에 올리면 링크 복사로 교체
+async function share(id) {
+  const s = BY_ID[id], text = `${s.word} = ${s.mean}\n"${s.ex}"`;
+  try { await navigator.clipboard.writeText(text); toast("복사됨, 친구한테 보내 ㅋ", "check"); }
+  catch { toast("복사가 안 돼서 직접 긁어줘"); }
+}
+function jump() {
+  let id; try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+  const it = id && ITEMS.find(x => x.el.id === id);
+  if (!it) return;
+  if (it.el.hidden || it.el.parentElement.hidden) { qInput.value = ""; setRoom("전체"); }
+  it.el.scrollIntoView({ behavior: smooth, block: "center" });
+  replay(it.el, "flash");
+  const st = sticker("이거 ㄱ", "var(--sent)", "-8deg"); st.classList.add("here"); it.el.append(st);
+  setTimeout(() => st.remove(), 1600);
+}
+let tt;
+function toast(msg, kind) {
+  $("tmsg").textContent = msg;
+  toastEl.className = "toast show" + (kind ? " k" + kind : "");
+  clearTimeout(tt); tt = setTimeout(() => toastEl.classList.remove("show"), kind === "stk" ? 3000 : 1600);
+}
+
+composer.addEventListener("submit", e => { e.preventDefault(); if (qInput.value.trim()) { qInput.blur(); countPill.scrollIntoView({ behavior: smooth, block: "start" }); } else qInput.focus(); });
+qInput.addEventListener("input", () => applyFilter(true));
+$("search-btn").onclick = () => qInput.focus();
+$("reset").onclick = () => { qInput.value = ""; setRoom("전체"); };
+$("top").onclick = () => scrollTo({ top: 0, behavior: smooth });
+addEventListener("hashchange", jump);
+// iOS 키보드가 열리면 sticky 컴포저가 가려져서 visualViewport 만큼 올림
+const vv = window.visualViewport;
+if (vv) {
+  const fix = () => { composer.style.transform = document.activeElement === qInput ? `translateY(-${Math.max(0, innerHeight - vv.height - vv.offsetTop)}px)` : ""; };
+  vv.addEventListener("resize", fix); vv.addEventListener("scroll", fix); qInput.addEventListener("blur", fix);
+}
+
+applyFilter(false);
+ITEMS.forEach(it => io.observe(it.el)); io.observe(nt.el);
+SECS.forEach(s => sio.observe(s.el.firstElementChild));
+try { const saved = JSON.parse(localStorage.getItem("nocap.quiz")); if (saved && saved.day === day) answer(saved.pick, true); } catch {}
+jump();
+
+console.assert(SLANG.filter(s => matches(s, "수상")).length === 1, "검색 self-check 실패");
+console.assert(OPTS.length === 4 && new Set(OPTS).size === 4 && OPTS.includes(today.mean), "퀴즈 self-check 실패");
+console.assert(new Set(ITEMS.map(it => it.el.id)).size === SLANG.length, "슬러그 중복");
+console.assert(ITEMS.every(it => it.s), "정적 마크업 ↔ SLANG 불일치");
+console.assert(SECS.length === CATS.length - 1 && SECS.every(s => s.items.length === s.el.querySelectorAll(".thread").length), "섹션 self-check 실패");
+</script>
+</body>
+</html>
