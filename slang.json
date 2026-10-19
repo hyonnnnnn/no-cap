@@ -72,5 +72,15 @@
   ["smh", "약어", "한심해서 고개 젓는 중 (shaking my head)", "He forgot his keys again. smh.", "또 열쇠 두고 왔대. 한심하다."],
   ["imo", "약어", "내 생각엔 (in my opinion)", "imo, the first season was the best.", "내 생각엔 시즌 1이 제일 나았어."],
   ["brb", "약어", "금방 올게 (be right back)", "brb, grabbing coffee.", "금방 올게, 커피 좀 사 오려고."],
-  ["tl;dr", "약어", "요약하자면 (too long; didn't read)", "tl;dr: the meeting moved to Friday.", "요약: 회의 금요일로 옮겨짐."]
+  ["tl;dr", "약어", "요약하자면 (too long; didn't read)", "tl;dr: the meeting moved to Friday.", "요약: 회의 금요일로 옮겨짐."],
+  ["aura", "칭찬", "분위기·존재감, 아우라 (aura points)", "He walked in so calm, that guy has crazy aura.", "쟤 들어올 때 여유 미쳤다, 아우라 장난 아님."],
+  ["cooked", "리액션", "망했다, 끝났다", "The exam is in an hour and I haven't studied, I'm cooked.", "시험 한 시간 남았는데 공부 하나도 안 함, 나 끝났다."],
+  ["crash out", "감정", "(화나서) 이성 잃고 폭주하다", "Don't crash out over one bad grade, it's fine.", "성적 하나 때문에 폭주하지 마, 괜찮아."],
+  ["beige flag", "관계", "나쁘진 않은데 묘하게 애매한 특징", "Beige flag: he only texts in all lowercase.", "애매한 포인트: 걔 문자 전부 소문자로만 보냄."],
+  ["rage bait", "SNS", "일부러 화나게 만드는 어그로 글", "Don't reply to that post, it's literally rage bait.", "그 글에 댓글 달지 마, 완전 어그로야."],
+  ["lock in", "일상·학교", "(정신 차리고) 완전 집중하다", "Finals are next week, I really need to lock in.", "다음 주 기말이라 진짜 정신 차리고 집중해야 돼."],
+  ["secure the bag", "돈·일", "돈을 확실히 챙기다, 한몫 잡다", "She got the internship offer, time to secure the bag.", "걔 인턴 합격했대, 이제 돈 벌 일만 남았다."],
+  ["diff", "게임", "실력 차이 (~가 승패를 가름)", "We lost because of a total jungle diff.", "우리 정글 실력 차이로 진 거야."],
+  ["mog", "외모·패션", "(외모로) 옆 사람을 압도하다", "Standing next to him in the photo, I got mogged so bad.", "사진에서 걔 옆에 서니까 나 완전 오징어 됨."],
+  ["ong", "약어", "진짜로, 맹세코 (on god)", "That was the best ramen I've ever had, ong.", "내 인생 최고의 라멘이었음, 진짜로."]
 ]
