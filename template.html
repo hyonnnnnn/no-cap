@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="영어 슬랭 74개를 단톡방 대화로 배우는 한국어 슬랭 사전">
+<meta name="google-site-verification" content="FnH2TZhGSTkLGyAjtx9I6-pmtyzYiGqdKE2gcLFTAYQ" />
+<style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}img{max-width:100%}</style>
+<title>No Cap 슬랭 사전</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Jua&family=Gothic+A1:wght@400;600&family=Gaegu:wght@700&display=swap">
+<style>
+/* 컨셉: 사전이 아니라 밤에 밀린 톡을 따라잡는 단톡방. 채팅 셸(헤더/레일/피드/컴포저) + 듀오링고식 3D 버튼·퀵리플라이 퀴즈·읽기 진행 바 */
+:root {
+  --bg: #CBE2D6; --dot: #B3CFC2; --surface: #FFFFFF; --fg: #141A24; --muted: #4A596B; --line: #B4CBC0; --input: #EEF3F2;
+  --sent: #FFE066; --sent-fg: #141A24; --accent: #FF6B3D; --accent-edge: #C6451A; --accent-fg: #1A0E08;
+  --badge: #DF2A20; --badge-fg: #FFFFFF; --good: #3DD37C; --bad: #FF5C5C; --ink: #141A24; --cut: #FFFFFF;
+  --row-active: #FFF3BF; --chip-on: #141A24; --chip-on-fg: #FFE066; --av-fg: #FFFFFF;
+  --gl: max(16px, env(safe-area-inset-left, 0px)); --gr: max(16px, env(safe-area-inset-right, 0px)); --sat: env(safe-area-inset-top, 0px);
+  --bar: calc(56px + var(--sat)); --stuck: calc(64px + var(--sat));
+  --fd: "Fredoka", "Jua", sans-serif; --fb: "Gothic A1", sans-serif; --fj: "Jua", sans-serif; --fs: "Gaegu", sans-serif;
+}
+@media (max-width: 959px) { :root { --stuck: calc(116px + var(--sat)); } }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1B1D; --dot: #1B2C2F; --surface: #1C2B2E; --fg: #EEF3F2; --muted: #9FB3B4; --line: #2F4447; --input: #0F1B1D;
+    --sent: #E8CC45; --sent-fg: #141A24; --accent: #FF7A4D; --accent-edge: #B23A14; --accent-fg: #1A0E08;
+    --badge: #DF2A20; --badge-fg: #FFFFFF; --good: #3BD16A; --bad: #FF6B6B; --ink: #0A0F10; --cut: #EEF3F2;
+    --row-active: #2A3D40; --chip-on: #E8CC45; --chip-on-fg: #141A24; --av-fg: #FFFFFF; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1B1D; --dot: #1B2C2F; --surface: #1C2B2E; --fg: #EEF3F2; --muted: #9FB3B4; --line: #2F4447; --input: #0F1B1D;
+  --sent: #E8CC45; --sent-fg: #141A24; --accent: #FF7A4D; --accent-edge: #B23A14; --accent-fg: #1A0E08;
+  --badge: #DF2A20; --badge-fg: #FFFFFF; --good: #3BD16A; --bad: #FF6B6B; --ink: #0A0F10; --cut: #EEF3F2;
+  --row-active: #2A3D40; --chip-on: #E8CC45; --chip-on-fg: #141A24; --av-fg: #FFFFFF; color-scheme: dark;
+}
+
+[hidden] { display: none !important; }
+* { box-sizing: border-box; }
+html { font-synthesis: none; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg); font: 400 15px/1.55 var(--fb);
+  background-image: radial-gradient(var(--dot) 1.2px, transparent 1.3px); background-size: 22px 22px;
+  overflow-x: clip;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+mark { background: var(--sent); color: var(--sent-fg); padding: 0 2px; border-radius: 3px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+
+/* 헤더 */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); margin: 0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl)); padding: 0 var(--gr) 0 var(--gl); }
+.bar-in { display: flex; align-items: center; gap: 12px; height: 56px; max-width: 1080px; margin: 0 auto; }
+.title { font: 700 20px/1 var(--fd); margin: 0; white-space: nowrap; }
+.icon { margin-left: auto; width: 40px; height: 40px; border-radius: 12px; border: 0; background: none; color: var(--fg); display: grid; place-items: center; }
+.prog { position: absolute; left: 0; bottom: -1px; width: 100%; height: 3px; background: var(--sent); transform: scaleX(var(--read, 0)); transform-origin: left; transition: transform 400ms ease-out; }
+
+/* 다이컷 스티커 — 실제 이벤트/값 5곳에만 */
+.stk { display: inline-block; padding: 2px 10px; border-radius: 10px; font: 700 14px/1.3 var(--fs); color: var(--ink); background: var(--fill, var(--sent)); box-shadow: 0 0 0 3px var(--cut), 0 0 0 5px var(--ink); transform: rotate(var(--r, 0deg)); white-space: nowrap; }
+
+/* 채팅방 목록: DOM 하나, 모바일=탭 스트립(기본) / 데스크톱=레일 */
+.wrap { max-width: 1080px; margin: 0 auto; }
+.rooms { position: sticky; top: var(--bar); z-index: 15; display: flex; gap: 8px; height: 52px; margin: 0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl)); padding: 6px var(--gr) 6px var(--gl); background: var(--bg); overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; scrollbar-width: none; }
+.rooms::-webkit-scrollbar { display: none; }
+.room { flex: none; display: flex; align-items: center; gap: 6px; height: 40px; padding: 0 12px; border-radius: 999px; background: var(--surface); border: 2px solid var(--line); box-shadow: 0 2px 0 var(--line); color: var(--fg); font: 600 14px/1 var(--fb); scroll-snap-align: start; transition: transform 120ms, box-shadow 120ms, background-color 160ms; }
+.room:active { transform: translateY(2px); box-shadow: none; transition-duration: 80ms; }
+.room[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-fg); border-color: var(--chip-on); }
+.rav, .rprev { display: none; }
+.rtext { min-width: 0; }
+.rname { font: inherit; }
+.rprev { font: 400 13px/1.3 var(--fb); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.badge { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 5px; border-radius: 999px; background: var(--badge); color: var(--badge-fg); font: 700 10px/1 var(--fd); font-variant-numeric: tabular-nums; }
+
+/* 피드 */
+.feed { min-width: 0; padding-top: 12px; display: flex; flex-direction: column; min-height: calc(100dvh - var(--bar)); }
+.pill { display: flex; width: fit-content; max-width: 100%; margin: 0 auto; align-items: center; gap: 6px; background: var(--surface); border-radius: 999px; padding: 5px 12px; font: 600 12px/1.4 var(--fb); color: var(--muted); white-space: nowrap; }
+.n { font-variant-numeric: tabular-nums; }
+.date { margin-bottom: 12px; }
+.count { display: block; color: var(--fg); margin: 16px auto; scroll-margin-top: calc(var(--stuck) + 8px); white-space: normal; text-align: center; }
+.spill { position: sticky; top: var(--stuck); z-index: 5; margin-bottom: 16px; transition: transform 150ms, box-shadow 150ms; }
+.stuck { transform: scale(1.04); box-shadow: 0 1px 0 var(--line); }
+.warn { border-radius: 16px; max-width: 92%; line-height: 1.5; white-space: normal; text-align: center; }
+
+/* 공지 바(오늘의 슬랭) */
+.notice { display: grid; grid-template-columns: 20px 1fr 20px; gap: 10px; align-items: center; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; color: var(--fg); font: inherit; }
+.ntext { min-width: 0; display: grid; gap: 2px; }
+.nlabel { font: 600 12px/1.3 var(--fb); color: var(--muted); }
+.nword { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.nword b { font: 700 20px/1.1 var(--fd); flex: none; }
+.nmean { font: 600 14px/1.3 var(--fb); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.chev { transition: transform 250ms; }
+.notice[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.npanel { padding: 16px 0 4px; }
+
+/* 스레드 = 항목 1개 (예문 → 내 질문 → 뜻) */
+.sec { position: relative; }
+.sentinel { position: absolute; top: calc(-1 * var(--stuck)); left: 0; width: 1px; height: 1px; }
+.thread { position: relative; z-index: 1; display: grid; grid-template-columns: 36px 1fr; column-gap: 8px; row-gap: 6px; margin-bottom: 20px; scroll-margin-top: calc(var(--stuck) + 8px); --d: calc(var(--i, 0) * 90ms); }
+.av { grid-row: 1; width: 36px; height: 36px; border-radius: 50%; background: hsl(calc(var(--h) * 36) 50% 38%); color: var(--av-fg); font: 400 16px/36px var(--fj); text-align: center; }
+.bot { background: var(--chip-on); color: var(--chip-on-fg); font: 700 16px/36px var(--fd); }
+.who { grid-column: 2; grid-row: 1; display: flex; align-items: baseline; gap: 8px; min-width: 0; align-self: center; }
+.name { font: 700 20px/1.1 var(--fd); color: var(--fg); background: none; border: 0; padding: 9px 6px; margin: -9px -6px; text-align: left; min-width: 0; overflow-wrap: anywhere; }
+.name:hover { text-decoration: underline 3px var(--sent); text-underline-offset: 3px; }
+.cat { font: 400 12px/1.3 var(--fb); color: var(--muted); white-space: nowrap; }
+.bubble { grid-column: 2; position: relative; margin: 0; min-width: 0; overflow-wrap: anywhere; border-radius: 18px; }
+.rcv { justify-self: start; max-width: 82%; background: var(--surface); color: var(--fg); padding: 10px 14px; border-top-left-radius: 4px; box-shadow: 0 1px 0 var(--line); transform-origin: bottom left; }
+.snt { justify-self: end; max-width: 78%; background: var(--sent); color: var(--sent-fg); padding: 8px 12px; border-top-right-radius: 4px; font: 400 14px/1.5 var(--fb); transform-origin: bottom right; }
+.ex { font: 500 16px/1.45 var(--fd); }
+.ex b { font-weight: 700; text-decoration: underline 3px var(--sent); text-underline-offset: 2px; }
+.txt { display: block; }
+.m { font: 600 15px/1.55 var(--fb); }
+.t { font: 400 14px/1.55 var(--fb); color: var(--muted); }
+.one { position: absolute; left: -14px; bottom: 2px; font: 700 11px/1 var(--fd); color: var(--fg); opacity: .7; }
+.in .one { opacity: 0; transform: translateX(4px); }
+.dots { position: absolute; top: 15px; left: 14px; display: flex; gap: 4px; }
+.dots i { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+.typing { min-height: 40px; min-width: 64px; }
+.here { position: absolute; top: -10px; right: 8px; }
+.flash::after { content: ""; position: absolute; inset: -6px; border-radius: 24px; border: 3px solid var(--sent); opacity: 0; pointer-events: none; animation: ring 900ms; }
+
+/* 퀴즈(공지 패널) */
+.quiz { display: grid; grid-template-columns: 36px 1fr; column-gap: 8px; row-gap: 8px; margin-bottom: 8px; }
+.opts { grid-column: 2; justify-self: end; width: 88%; display: grid; gap: 8px; }
+.qstk { position: absolute; top: -12px; right: -8px; }
+
+/* 청키 버튼 — 듀오링고 문법 */
+.btn, .btn2 { height: 44px; padding: 0 18px; border-radius: 16px; border: 0; font: 400 16px/1 var(--fj); transition: transform 120ms, box-shadow 120ms; }
+.btn { background: var(--accent); color: var(--accent-fg); box-shadow: 0 4px 0 var(--accent-edge); }
+.btn2 { background: var(--surface); color: var(--fg); border: 2px solid var(--line); box-shadow: 0 4px 0 var(--line); }
+.btn:active, .btn2:active { transform: translateY(4px); box-shadow: none; transition-duration: 80ms; }
+.opt { height: auto; min-height: 44px; padding: 10px 14px; font: 600 15px/1.4 var(--fb); text-align: left; white-space: normal; }
+.reset { grid-column: 2; justify-self: start; }
+
+/* 푸터 + 컴포저 */
+.foot { display: grid; gap: 16px; justify-items: center; margin: 8px 0 24px; }
+.divider { display: flex; align-items: center; gap: 12px; width: 100%; margin: 0; font: 400 12px/1 var(--fb); color: var(--muted); }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.composer { position: sticky; bottom: 0; z-index: 15; display: grid; grid-template-columns: 1fr auto; gap: 8px; background: var(--surface); border-top: 1px solid var(--line); margin: auto calc(-1 * var(--gr)) 0 calc(-1 * var(--gl)); padding: 10px var(--gr) calc(10px + env(safe-area-inset-bottom, 0px)) var(--gl); }
+.q { width: 100%; min-width: 0; height: 44px; border-radius: 22px; background: var(--input); border: 0; color: var(--fg); font: 400 16px/1 var(--fb); padding: 0 16px; -webkit-appearance: none; appearance: none; }
+.q::placeholder { color: var(--muted); }
+.q:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--fg); }
+
+/* 토스트 */
+.toast { position: fixed; left: 50%; bottom: calc(72px + env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; align-items: center; gap: 8px; background: var(--sent); color: var(--sent-fg); border-radius: 999px; padding: 8px 14px; font: 600 14px/1.3 var(--fb); white-space: nowrap; opacity: 0; transform: translate(-50%, 8px); transition: opacity 150ms, transform 150ms; pointer-events: none; }
+.show { opacity: 1; transform: translate(-50%, 0); transition-duration: 200ms; }
+.tcheck, .tstk { display: none; }
+.kcheck .tcheck { display: block; }
+.kstk .tstk { display: inline-block; margin: 0 8px 0 4px; }
+
+@media (max-width: 479px) { .title { font-size: 18px; } }
+@media (max-width: 400px) {
+  .thread, .quiz { grid-template-columns: 32px 1fr; }
+  .av { width: 32px; height: 32px; line-height: 32px; font-size: 14px; }
+  .name { font-size: 18px; padding-block: 11px; margin-block: -11px; }
+}
+@media (min-width: 960px) {
+  .wrap { display: grid; grid-template-columns: 272px minmax(0, 1fr); column-gap: 24px; align-items: start; }
+  .rooms { top: calc(var(--bar) + 16px); display: grid; align-content: start; gap: 4px; height: auto; max-height: calc(100dvh - var(--bar) - 32px); margin: 0 -6px; padding: 16px 6px; background: none; overflow: auto; scroll-snap-type: none; }
+  .room { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; height: 60px; padding: 8px 10px; border-radius: 14px; background: none; border: 0; box-shadow: none; font-size: 15px; text-align: left; width: 100%; }
+  .room:active { transform: none; }
+  .room[aria-pressed="true"] { background: var(--row-active); color: var(--fg); }
+  .rav { display: block; width: 44px; height: 44px; border-radius: 50%; background: hsl(calc(var(--h) * 36) 50% 38%); color: var(--av-fg); font: 400 18px/44px var(--fj); text-align: center; }
+  .all { background: var(--chip-on); color: var(--chip-on-fg); font: 700 11px/44px var(--fd); }
+  .rprev { display: block; }
+  .rtext { display: grid; gap: 2px; }
+  .badge { min-width: 18px; height: 18px; padding: 0 6px; font-size: 11px; }
+  .feed { max-width: 680px; }
+  .composer { margin: auto 0 0; padding-left: 16px; padding-right: 16px; }
+}
+
+/* 모션: 도착 시퀀스(CSS delay만) + 스크롤 팝인(IO) + 타이핑 리빌(첫 3개 + 오늘) */
+@media (prefers-reduced-motion: no-preference) {
+  .date { animation: fade 200ms both; }
+  .notice { animation: drop 500ms cubic-bezier(.34, 1.56, .64, 1) both; }
+  .arrive { animation: fade 200ms both; }
+  .js .reveal:not(.in) .bubble { opacity: 0; transform: translateY(10px) scale(.96); }
+  .js [data-typing]:not(.in) .txt { opacity: 0; }
+  .in .bubble { opacity: 1; transform: none; transition: transform 320ms cubic-bezier(.34, 1.56, .64, 1), opacity 200ms ease; transition-delay: var(--d); }
+  .in .snt { transition-delay: calc(120ms + var(--d)); }
+  .in .re { transition-delay: calc(240ms + var(--d)); }
+  .in .dots { opacity: 0; transition: opacity 150ms calc(690ms + var(--d)); }
+  .in .dots i { animation: bounce 450ms ease-in-out calc(240ms + var(--d) + var(--k, 0ms)); }
+  .in .txt { opacity: 1; transition: opacity 200ms calc(690ms + var(--d)); }
+  .in .one { transition: opacity 300ms calc(650ms + var(--d)), transform 300ms calc(650ms + var(--d)); }
+  .instant .bubble, .instant .dots, .instant .dots i, .instant .txt, .instant .one { transition: none; animation: none; }
+  .typing .dots i { animation: bounce 450ms ease-in-out var(--k, 0ms) infinite; }
+  .pop { animation: pop 200ms; }
+  .swap { animation: swap 220ms; }
+  .opt { animation: rise 240ms var(--k, 0ms) both; }
+  .anim { animation: popin 320ms cubic-bezier(.34, 1.56, .64, 1) both; }
+  .qstk { animation: stick 380ms both; }
+  .shake { animation: shake 360ms; }
+  .here { animation: arrive 240ms both; }
+}
+@media (hover: hover) {
+  .icon:hover, .room[aria-pressed="false"]:hover { background: var(--input); }
+  .thread:has(.rcv:hover) .av { animation: wiggle 300ms; }
+}
+/* 데스크톱 레일: --input은 다크에서 --bg와 같아 호버가 안 보임 */
+@media (hover: hover) and (min-width: 960px) { .room[aria-pressed="false"]:hover { background: var(--surface); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes drop { from { transform: translateY(-16px); opacity: 0; } }
+@keyframes bounce { 50% { transform: translateY(-3px); } }
+@keyframes pop { 50% { transform: scale(1.12); } }
+@keyframes swap { 50% { opacity: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+@keyframes popin { from { opacity: 0; transform: translateY(10px) scale(.96); } }
+@keyframes stick { from { transform: scale(.6) rotate(var(--r)); } 70% { transform: scale(1.08) rotate(var(--r)); } }
+@keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+@keyframes ring { 30% { opacity: 1; transform: scale(1.02); } to { opacity: 0; transform: scale(1); } }
+@keyframes wiggle { 33% { transform: rotate(-6deg); } 66% { transform: rotate(6deg); } }
+@keyframes arrive { from { opacity: 0; transform: translateY(-12px) rotate(var(--r)); } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .dots { display: none; }
+  .txt { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <h1 class="title">No Cap 슬랭 사전</h1>
+    <span class="stk" id="members" style="--r:-4deg">74명</span>
+    <button class="icon" id="search-btn" type="button" aria-label="검색">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+    </button>
+  </div>
+  <div class="prog" id="prog" aria-hidden="true"></div>
+</header>
+
+<div class="wrap">
+  <nav class="rooms" id="rooms" aria-label="채팅방">
+    {{ROOMS}}
+  </nav>
+  <main class="feed" id="feed">
+    <p class="pill date" id="date">오늘</p>
+    <button class="notice" id="notice" type="button" aria-expanded="false" aria-controls="npanel">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"></path><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z"></path></svg>
+      <span class="ntext"><span class="nlabel" id="nlabel">오늘의 슬랭</span><span class="nword"><b id="nword">no cap</b><span class="nmean" id="nmean">진짜로, 뻥 아님</span></span></span>
+      <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+    </button>
+    <div class="npanel" id="npanel" hidden></div>
+    <p class="pill count arrive" id="count" aria-hidden="true">슬랭 <span class="n">74</span>개가 입장했습니다</p>
+    <span class="sr" id="live" aria-live="polite"></span>
+    <div id="list">
+{{SECTIONS}}
+    </div>
+    <article class="thread" id="empty" hidden>
+      <span class="av bot" aria-hidden="true">N</span>
+      <div class="who"><span class="name">No Cap 봇</span></div>
+      <p class="bubble rcv">그 단어는 아직 없어요 ㅠ 다른 말로 검색해볼래?</p>
+      <button class="btn2 reset" id="reset" type="button">전체 보기</button>
+    </article>
+    <footer class="foot">
+      <p class="pill warn">슬랭은 친한 사이에서만 ㅇㅇ. 면접이나 업무 메일에서 쓰면 그건 좀 sus.</p>
+      <p class="divider">대화가 더 없어요</p>
+      <button class="btn2" id="top" type="button">맨 위로</button>
+    </footer>
+    <form class="composer" id="composer" role="search">
+      <input class="q" id="q" type="search" placeholder="검색: sus, 수상한, 칭찬…" aria-label="슬랭 검색" autocomplete="off">
+      <button class="btn" id="go" type="submit">검색</button>
+    </form>
+  </main>
+</div>
+<div class="toast" id="toast" role="status">
+  <svg class="tcheck" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg>
+  <span id="tmsg"></span>
+  <span class="stk tstk" style="--fill:var(--good);--r:3deg" aria-hidden="true">폼 미쳤다</span>
+</div>
+
+<script>
+document.documentElement.classList.add("js");
+{{SLANG}}
+
+const CATS = ["전체", ...new Set(SLANG.map(s => s.cat))];
+const $ = id => document.getElementById(id);
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const smooth = RM ? "auto" : "smooth";
+const slug = w => w.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const hide = e => { e.setAttribute("aria-hidden", "true"); return e; };
+const bubble = (cls, text) => el("p", "bubble " + cls, text);
+const sticker = (text, fill, r) => { const s = hide(el("span", "stk", text)); s.style.setProperty("--fill", fill); s.style.setProperty("--r", r); return s; };
+const dotsEl = () => { const d = hide(el("span", "dots")); for (let k = 0; k < 3; k++) { const i = el("i"); i.style.setProperty("--k", k * 120 + "ms"); d.append(i); } return d; };
+// 같은 keyframe을 다시 재생하려면 클래스를 뗐다 붙이는 사이에 리플로우가 필요
+const replay = (e, c) => { e.classList.remove(c); void e.offsetWidth; e.classList.add(c); };
+
+const feed = $("feed"), list = $("list"), qInput = $("q"), countPill = $("count"), live = $("live"), composer = $("composer"), toastEl = $("toast");
+const num = el("span", "n");
+const ASK = ["뭔 뜻이야 ㅋㅋ", "그게 뭔데", "?? 해석 좀"];
+let room = "전체";
+$("members").textContent = SLANG.length + "명";
+
+// 채팅방 목록 — 정적 마크업을 하이드레이트 (데스크톱 레일 / 모바일 탭을 DOM 하나로)
+const ROOMS = [...$("rooms").querySelectorAll(".room")];
+ROOMS.forEach(b => { b.onclick = () => setRoom(b.dataset.cat); });
+
+function thread(s, i, typing) {
+  const id = slug(s.word);
+  const a = el("article", "thread reveal"); a.id = id;
+  const name = el("button", "name"); name.type = "button"; name.id = "n-" + id; name.title = "뜻 복사"; name.onclick = () => share(id);
+  a.setAttribute("aria-labelledby", name.id);
+  const who = el("div", "who"); who.append(name, el("span", "cat", s.cat));
+  const ex = bubble("rcv ex"); ex.lang = "en";
+  const snt = bubble("snt", ASK[i % 3]); snt.prepend(hide(el("span", "one", "1")));
+  const re = bubble("rcv re"), m = el("span", "m"), t = el("span", "t"), txt = el("span", "txt");
+  txt.append(m, el("br"), t); re.append(txt);
+  if (typing) { a.dataset.typing = ""; re.prepend(dotsEl()); }
+  a.append(hide(el("span", "av", s.cat[0])), who, ex, snt, re);
+  return { s, el: a, name, ex, m, t };
+}
+
+// 검색 하이라이트: 텍스트 노드 + <mark> 요소만 조립 (HTML 문자열 삽입 없음)
+function mark(node, text, q) {
+  if (!q) { node.textContent = text; return; }
+  const lo = text.toLowerCase(), frag = document.createDocumentFragment();
+  let i = 0, j;
+  while ((j = lo.indexOf(q, i)) !== -1) { frag.append(text.slice(i, j), el("mark", "", text.slice(j, j + q.length))); i = j + q.length; }
+  frag.append(text.slice(i));
+  node.replaceChildren(frag);
+}
+function paintEx(node, s, q) {
+  if (q) return mark(node, s.ex, q);
+  const j = s.ex.toLowerCase().indexOf(s.word.toLowerCase());
+  if (j < 0) { node.textContent = s.ex; return; }
+  node.replaceChildren(s.ex.slice(0, j), el("b", "", s.ex.slice(j, j + s.word.length)), s.ex.slice(j + s.word.length));
+}
+function paint(it, q) { mark(it.name, it.s.word, q); paintEx(it.ex, it.s, q); mark(it.m, it.s.mean, q); mark(it.t, it.s.ko, q); }
+
+// 정적 스레드 하이드레이트: SLANG은 검색/페인트 데이터로만 쓰고 DOM은 마크업 그대로
+const BY_ID = Object.fromEntries(SLANG.map(s => [slug(s.word), s]));
+function hydrate(a, typing) {
+  const q = c => a.querySelector(c), name = q(".name");
+  name.onclick = () => share(a.id);
+  if (typing) { a.dataset.typing = ""; q(".re").prepend(dotsEl()); }
+  return { s: BY_ID[a.id], el: a, name, ex: q(".ex"), m: q(".m"), t: q(".t") };
+}
+const ITEMS = [];
+const SECS = [...list.querySelectorAll(".sec")].map(sec => ({ el: sec, items: [...sec.querySelectorAll(".thread")].map(a => { const it = hydrate(a, ITEMS.length < 3); ITEMS.push(it); return it; }) }));
+
+// 오늘의 슬랭 + 날짜 시드 퀴즈 (모두 같은 날 같은 문제)
+const day = Math.floor(Date.now() / 864e5), todayIdx = day % SLANG.length, today = SLANG[todayIdx];
+const now = new Date();
+$("date").textContent = "오늘 · " + now.toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "long" });
+$("nlabel").textContent = "오늘의 슬랭 · " + now.toLocaleDateString("ko-KR", { month: "long", day: "numeric" });
+$("nword").textContent = today.word; $("nmean").textContent = today.mean;
+const nt = thread(today, 0, true);
+nt.el.removeAttribute("id"); nt.name.id = "n-today"; nt.el.setAttribute("aria-labelledby", "n-today");
+nt.el.classList.add("notice-thread"); nt.el.style.setProperty("--h", CATS.indexOf(today.cat) - 1);
+paint(nt, "");
+
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rng = mulberry32(day);
+const shuffle = arr => { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; };
+const OPTS = shuffle([today.mean, ...shuffle(SLANG.map((_, i) => i).filter(i => i !== todayIdx)).slice(0, 3).map(i => SLANG[i].mean)]);
+const quiz = el("div", "quiz"), opts = el("div", "opts");
+quiz.append(bubble("rcv", "근데 내 뜻 알아? 골라봐 ㅋㅋ"), opts);
+OPTS.forEach((o, k) => { const b = el("button", "btn2 opt", o); b.type = "button"; b.id = "opt-" + k; b.style.setProperty("--k", k * 60 + "ms"); b.onclick = () => answer(o, false); opts.append(b); });
+$("npanel").append(nt.el, quiz);
+
+function answer(pick, instant) {
+  const ok = pick === today.mean, snt = bubble("snt", pick), re = bubble("rcv re");
+  opts.replaceWith(snt); quiz.append(re);
+  const fin = () => {
+    re.classList.remove("typing");
+    re.textContent = ok ? "ㅇㅈ 정답 ㅋㅋㅋ 폼 미쳤다" : "아 아깝 ㅠ 정답은 → " + today.mean;
+    const st = sticker(ok ? "정답" : "아깝", ok ? "var(--good)" : "var(--bad)", ok ? "5deg" : "-5deg"); st.classList.add("qstk"); re.append(st);
+    if (!ok && !instant) snt.classList.add("shake");
+  };
+  if (instant || RM) fin(); else { snt.classList.add("anim"); re.classList.add("anim", "typing"); re.append(dotsEl()); setTimeout(fin, 450); }
+  try { localStorage.setItem("nocap.quiz", JSON.stringify({ day, pick })); } catch {}
+}
+$("notice").onclick = () => { const open = $("notice").getAttribute("aria-expanded") !== "true"; $("notice").setAttribute("aria-expanded", open); $("npanel").hidden = !open; };
+
+// 필터: hidden 토글만 (재렌더 없음 → 등장 애니메이션 리플레이 없음)
+const matches = (s, q) => (room === "전체" || s.cat === room) && (!q || [s.word, s.mean, s.cat, s.ex, s.ko].some(t => t.toLowerCase().includes(q)));
+function applyFilter(user) {
+  const raw = qInput.value.trim(), q = raw.toLowerCase();
+  let n = 0;
+  SECS.forEach(sec => {
+    let v = 0;
+    sec.items.forEach(it => { const ok = matches(it.s, q); it.el.hidden = !ok; if (ok) { v++; paint(it, q); } });
+    sec.el.hidden = !v; n += v;
+  });
+  $("empty").hidden = n > 0;
+  if (user) instantIn();
+  setCount(n, q ? [`'${raw}' 검색 결과 `, "개"] : [room === "전체" ? "슬랭 " : room + " 슬랭 ", "개가 입장했습니다"], !user);
+}
+function setRoom(c) {
+  room = c;
+  ROOMS.forEach(b => b.setAttribute("aria-pressed", b.dataset.cat === c));
+  applyFilter(true);
+  replay(feed, "swap");
+}
+let cur = 0, tick = 0;
+function setCount(n, [pre, post], silent) {
+  countPill.replaceChildren(pre, num, post);
+  const sentence = pre + n + post;
+  if (silent || RM || cur === n) { tick++; num.textContent = n; cur = n; live.textContent = sentence; return; }
+  const from = cur, t0 = performance.now(), my = ++tick;
+  cur = n;
+  countPill.classList.remove("arrive"); replay(countPill, "pop");
+  const step = t => {
+    if (my !== tick) return;
+    const p = Math.min(1, (t - t0) / 350), e = 1 - (1 - p) ** 3;
+    num.textContent = Math.round(from + (n - from) * e);
+    if (p < 1) requestAnimationFrame(step); else live.textContent = sentence;
+  };
+  requestAnimationFrame(step);
+}
+
+// 스크롤 팝인 + 읽기 진행 바: IO 하나로 (스크롤 리스너 0)
+let done = !window.IntersectionObserver; // IO 폴백은 전부 .in이라 완독 토스트 생략
+function updateRead() {
+  const n = list.querySelectorAll(".reveal.in").length;
+  document.documentElement.style.setProperty("--read", n / SLANG.length);
+  $("prog").title = `읽은 슬랭 ${n}/${SLANG.length}`;
+  if (n === SLANG.length && !done) { done = true; toast(`${SLANG.length}개 다 읽음 ㅋㅋ`, "stk"); }
+}
+// IO 없는 환경: 전부 바로 보이게 (진행 바만 0에 머묾)
+const IO = window.IntersectionObserver || class { observe(t) { t.classList.add("in"); } unobserve() {} };
+const io = new IO(es => {
+  let i = 0;
+  es.forEach(e => { if (!e.isIntersecting) return; e.target.style.setProperty("--i", Math.min(i++, 6)); e.target.classList.add("in"); io.unobserve(e.target); });
+  updateRead();
+}, { threshold: .35, rootMargin: "0px 0px -8% 0px" });
+function instantIn() {
+  list.querySelectorAll(".reveal:not(.in)").forEach(t => {
+    const r = t.getBoundingClientRect();
+    if (r.height && r.top < innerHeight && r.bottom > 0) { t.classList.add("in", "instant"); io.unobserve(t); }
+  });
+  updateRead();
+}
+const sio = new IO(es => es.forEach(e => e.target.nextElementSibling.classList.toggle("stuck", !e.isIntersecting && e.boundingClientRect.top < 0)), { threshold: 0 });
+
+// 단어 공유 + 딥링크 도착
+// shortcut: 아티팩트 iframe 안에서는 location.href가 공유 가능한 주소가 아니라 링크 대신 단어+뜻 텍스트를 복사, 자체 도메인에 올리면 링크 복사로 교체
+async function share(id) {
+  const s = BY_ID[id], text = `${s.word} = ${s.mean}\n"${s.ex}"`;
+  try { await navigator.clipboard.writeText(text); toast("복사됨, 친구한테 보내 ㅋ", "check"); }
+  catch { toast("복사가 안 돼서 직접 긁어줘"); }
+}
+function jump() {
+  let id; try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+  const it = id && ITEMS.find(x => x.el.id === id);
+  if (!it) return;
+  if (it.el.hidden || it.el.parentElement.hidden) { qInput.value = ""; setRoom("전체"); }
+  it.el.scrollIntoView({ behavior: smooth, block: "center" });
+  replay(it.el, "flash");
+  const st = sticker("이거 ㄱ", "var(--sent)", "-8deg"); st.classList.add("here"); it.el.append(st);
+  setTimeout(() => st.remove(), 1600);
+}
+let tt;
+function toast(msg, kind) {
+  $("tmsg").textContent = msg;
+  toastEl.className = "toast show" + (kind ? " k" + kind : "");
+  clearTimeout(tt); tt = setTimeout(() => toastEl.classList.remove("show"), kind === "stk" ? 3000 : 1600);
+}
+
+composer.addEventListener("submit", e => { e.preventDefault(); if (qInput.value.trim()) { qInput.blur(); countPill.scrollIntoView({ behavior: smooth, block: "start" }); } else qInput.focus(); });
+qInput.addEventListener("input", () => applyFilter(true));
+$("search-btn").onclick = () => qInput.focus();
+$("reset").onclick = () => { qInput.value = ""; setRoom("전체"); };
+$("top").onclick = () => scrollTo({ top: 0, behavior: smooth });
+addEventListener("hashchange", jump);
+// iOS 키보드가 열리면 sticky 컴포저가 가려져서 visualViewport 만큼 올림
+const vv = window.visualViewport;
+if (vv) {
+  const fix = () => { composer.style.transform = document.activeElement === qInput ? `translateY(-${Math.max(0, innerHeight - vv.height - vv.offsetTop)}px)` : ""; };
+  vv.addEventListener("resize", fix); vv.addEventListener("scroll", fix); qInput.addEventListener("blur", fix);
+}
+
+applyFilter(false);
+ITEMS.forEach(it => io.observe(it.el)); io.observe(nt.el);
+SECS.forEach(s => sio.observe(s.el.firstElementChild));
+try { const saved = JSON.parse(localStorage.getItem("nocap.quiz")); if (saved && saved.day === day) answer(saved.pick, true); } catch {}
+jump();
+
+console.assert(SLANG.filter(s => matches(s, "수상")).length === 1, "검색 self-check 실패");
+console.assert(OPTS.length === 4 && new Set(OPTS).size === 4 && OPTS.includes(today.mean), "퀴즈 self-check 실패");
+console.assert(new Set(ITEMS.map(it => it.el.id)).size === SLANG.length, "슬러그 중복");
+console.assert(ITEMS.every(it => it.s), "정적 마크업 ↔ SLANG 불일치");
+console.assert(SECS.length === CATS.length - 1 && SECS.every(s => s.items.length === s.el.querySelectorAll(".thread").length), "섹션 self-check 실패");
+</script>
+</body>
+</html>
