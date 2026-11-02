@@ -102,5 +102,15 @@
   ["girl math", "돈·일", "내 맘대로 하는 소비 합리화 계산", "I returned the shoes, so the new bag is basically free. Girl math.", "신발 환불했으니까 새 가방은 사실상 공짜지. 완벽한 계산임."],
   ["skill issue", "게임", "실력 문제, 네가 못한 거", "You lost to a bot? Sounds like a skill issue.", "봇한테 졌다고? 그냥 니 실력 문제네."],
   ["baddie", "외모·패션", "자신감 넘치고 멋진 여자", "She walked in with that outfit like a total baddie.", "걔 그 옷 입고 들어오는데 완전 멋있더라."],
-  ["NPC", "약어", "영혼 없이 존재감 없는 사람 (non-player character)", "I was just standing there like an NPC at the party.", "파티에서 나 그냥 엑스트라처럼 서 있었어."]
+  ["NPC", "약어", "영혼 없이 존재감 없는 사람 (non-player character)", "I was just standing there like an NPC at the party.", "파티에서 나 그냥 엑스트라처럼 서 있었어."],
+  ["so real", "리액션", "완전 공감, 그거 인정", "Needing a nap after just one class is so real.", "수업 하나 듣고 낮잠 필요한 거 완전 인정."],
+  ["peak", "칭찬", "최고, 레전드 (가장 좋은 상태)", "That season finale was actually peak.", "그 시즌 마지막 화 진짜 레전드였다."],
+  ["era", "감정", "(인생의) 시기, ~에 꽂힌 시절", "I'm in my gym era now, no more late-night ramen.", "나 요즘 헬스 모드야, 야밤 라면 이제 끝."],
+  ["pookie", "관계", "자기, 애기 (애칭)", "Good morning, pookie, did you sleep well?", "자기야 굿모닝, 잘 잤어?"],
+  ["soft launch", "SNS", "(연인을) 살짝 티 내며 공개하기", "She soft launched her boyfriend with a pic of just his hand.", "걔 남친 손만 나온 사진으로 슬쩍 공개했더라."],
+  ["yap", "일상·학교", "쓸데없이 떠들다, 수다 떨다", "Sorry, I've been yapping about my ex for an hour.", "미안, 나 전애인 얘기로 한 시간째 떠들고 있네."],
+  ["loud budgeting", "돈·일", "돈 아끼는 걸 당당하게 밝히기", "I'm loud budgeting this month, so no brunch for me.", "나 이번 달 대놓고 아끼는 중이라 브런치는 패스."],
+  ["carry", "게임", "(팀을) 캐리하다, 혼자 이끌다", "Thanks for carrying me last round, I was useless.", "저번 판 캐리해줘서 고마워, 나 완전 짐이었어."],
+  ["serve", "외모·패션", "(외모·스타일로) 찢다, 멋 뽐내다", "You really came to serve today with that outfit.", "오늘 그 옷 완전 찢었다."],
+  ["bffr", "약어", "장난하지 마, 현실적으로 말해 (be for real)", "You said you'd be ready in five minutes? Bffr.", "5분이면 준비 끝난다고? 장난하지 말고."]
 ]
