@@ -172,5 +172,15 @@
   ["dupe", "돈·일", "비싼 제품이랑 비슷한 저렴이 (duplicate)", "I found a dupe for that bag and it was only twenty bucks.", "그 가방 저렴이 찾았는데 2만 원대밖에 안 해."],
   ["meta", "게임", "지금 제일 센 전략이나 조합, 대세 픽", "That character is meta right now, everyone's picking her.", "그 캐릭터 요즘 대세라 다들 걔만 골라."],
   ["coquette", "외모·패션", "리본이랑 레이스 가득한 사랑스러운 소녀풍 스타일", "She put bows on everything, her room is so coquette.", "걔 여기저기 리본 달아놨어, 방이 완전 공주풍이야."],
-  ["wsg", "약어", "뭐 해, 잘 지내? (what's good)", "Wsg, you free tonight?", "뭐 해, 오늘 밤에 시간 돼?"]
+  ["wsg", "약어", "뭐 해, 잘 지내? (what's good)", "Wsg, you free tonight?", "뭐 해, 오늘 밤에 시간 돼?"],
+  ["6-7", "리액션", "별 뜻 없이 외치는 밈 숫자 (six seven)", "\"How tall are you?\" \"Like 6-7.\" \"Bro said 6-7.\"", "\"너 키 몇이야?\" \"한 6-7?\" \"얘 방금 식스세븐 했다ㅋㅋ\""],
+  ["mother", "칭찬", "여왕님, 레전드 (다들 우러러보는 존재)", "She dropped another perfect album, she's literally mother.", "또 완벽한 앨범 냈어, 걔는 그냥 여왕님이야."],
+  ["copium", "감정", "정신승리용 헛된 희망 (cope + opium)", "Saying the exam was too easy to count is pure copium.", "시험이 너무 쉬워서 무효라는 건 그냥 정신승리야."],
+  ["fumble", "관계", "(좋은 사람·기회를) 놓치다, 날리다", "He fumbled the best girlfriend he ever had.", "걔 인생 최고의 여친을 지 손으로 놓쳤어."],
+  ["lore", "SNS", "(어떤 사람의) 숨은 서사, 뒷이야기", "Wait, you used to live in Paris? I need the full lore.", "잠깐, 너 파리 살았었어? 그 썰 전부 풀어봐."],
+  ["core memory", "일상·학교", "평생 잊지 못할 순간", "That road trip with you guys is a core memory.", "너네랑 간 그 여행은 평생 못 잊어."],
+  ["Sunday scaries", "돈·일", "일요일 저녁 출근·등교 앞두고 오는 불안감", "It's 8 p.m. and the Sunday scaries are hitting hard.", "저녁 8시 되니까 내일 출근 생각에 벌써 우울하다."],
+  ["griefing", "게임", "일부러 팀이나 남의 게임 방해하기, 트롤링", "Some random kept griefing our base all night.", "어떤 놈이 밤새 우리 기지 테러하고 다녔어."],
+  ["old money", "외모·패션", "대대로 부자 같은 고급스럽고 단정한 스타일 (올드머니룩)", "Polo shirt and loafers? Very old money of you.", "폴로티에 로퍼? 완전 올드머니룩인데."],
+  ["lmk", "약어", "알려줘 (let me know)", "lmk if you wanna come to dinner tonight.", "오늘 저녁 올 거면 알려줘."]
 ]
