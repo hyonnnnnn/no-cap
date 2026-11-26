@@ -182,5 +182,15 @@
   ["Sunday scaries", "돈·일", "일요일 저녁 출근·등교 앞두고 오는 불안감", "It's 8 p.m. and the Sunday scaries are hitting hard.", "저녁 8시 되니까 내일 출근 생각에 벌써 우울하다."],
   ["griefing", "게임", "일부러 팀이나 남의 게임 방해하기, 트롤링", "Some random kept griefing our base all night.", "어떤 놈이 밤새 우리 기지 테러하고 다녔어."],
   ["old money", "외모·패션", "대대로 부자 같은 고급스럽고 단정한 스타일 (올드머니룩)", "Polo shirt and loafers? Very old money of you.", "폴로티에 로퍼? 완전 올드머니룩인데."],
-  ["lmk", "약어", "알려줘 (let me know)", "lmk if you wanna come to dinner tonight.", "오늘 저녁 올 거면 알려줘."]
+  ["lmk", "약어", "알려줘 (let me know)", "lmk if you wanna come to dinner tonight.", "오늘 저녁 올 거면 알려줘."],
+  ["sheesh", "리액션", "와 대박, 미쳤다 (감탄)", "Sheesh, you got a 100 on the final?", "와 미쳤다, 기말 100점 받았다고?"],
+  ["based", "칭찬", "남 눈치 안 보고 소신 있는, 멋진", "He told the boss he's not working weekends. So based.", "걔 사장한테 주말엔 일 안 한다고 했대. 개멋있어."],
+  ["mood", "감정", "완전 내 상태, 공감 100%", "\"I just want to sleep for three days.\" \"Mood.\"", "\"그냥 3일 내내 자고 싶다.\" \"완전 나.\""],
+  ["gaslight", "관계", "(상대가 자기 기억·판단을 의심하게) 가스라이팅하다", "Don't gaslight me, you literally said you'd come.", "가스라이팅 하지 마, 너 분명히 온다고 했잖아."],
+  ["receipts", "SNS", "증거 (캡처, 기록)", "She said she never texted him, but I have receipts.", "걔 문자 한 적 없다는데, 나 캡처 다 있음."],
+  ["senioritis", "일상·학교", "졸업 앞두고 공부 손 놓는 병", "Senioritis is hitting hard, I haven't opened a book in weeks.", "졸업병 제대로 왔다, 몇 주째 책 안 폈어."],
+  ["bands", "돈·일", "큰돈, 돈다발 (보통 천 달러 단위)", "He's making bands from his YouTube channel now.", "걔 요즘 유튜브로 돈 쓸어 담는대."],
+  ["camping", "게임", "한자리에 숨어서 적 기다리기 (존버 플레이)", "Stop camping in the corner and actually fight!", "구석에서 존버 그만하고 좀 싸워!"],
+  ["aesthetic", "외모·패션", "감성, 분위기 있는 (감성 넘치는 스타일)", "Your room is so aesthetic, where'd you get those lights?", "너 방 완전 감성이다, 그 조명 어디서 샀어?"],
+  ["irl", "약어", "현실에서, 실제로 (in real life)", "We've been gaming together for a year but never met irl.", "1년째 같이 게임했는데 실제로는 한 번도 안 만났어."]
 ]
